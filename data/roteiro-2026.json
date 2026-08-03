@@ -556,7 +556,7 @@
           "needsBooking": true,
           "visitMinutes": 90,
           "note": "Perguntar sobre cobertura para F-roads e cascalho.",
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Campervan_rental_Iceland.jpg/800px-Campervan_rental_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714922/pexels-photo-3714922.jpeg"
         },
         {
           "id": "reykjavik-centro",
@@ -569,7 +569,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 180,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Reykjavik_city_center.jpg/800px-Reykjavik_city_center.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714923/pexels-photo-3714923.jpeg"
         }
       ],
       "campsitePlanA": "reykjavik-laugardalur",
@@ -611,7 +611,7 @@
           "visitMinutes": 360,
           "weatherSensitive": true,
           "note": "Reserva antecipada. ~USD 400/adulto.",
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Thrihnukagigur_inside_volcano.jpg/800px-Thrihnukagigur_inside_volcano.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714924/pexels-photo-3714924.jpeg"
         }
       ],
       "campsitePlanA": "thingvellir-leirar",
@@ -653,7 +653,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Thingvellir_rift_valley.jpg/800px-Thingvellir_rift_valley.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714896/pexels-photo-3714896.jpeg"
         },
         {
           "id": "geysir",
@@ -666,7 +666,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Strokkur_geyser_erupting.jpg/800px-Strokkur_geyser_erupting.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714898/pexels-photo-3714898.jpeg"
         },
         {
           "id": "gullfoss",
@@ -680,7 +680,7 @@
           "needsBooking": false,
           "visitMinutes": 60,
           "weatherSensitive": true,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Iceland_-_2017-02-22_-_Gullfoss_-_3684.jpg/800px-Iceland_-_2017-02-22_-_Gullfoss_-_3684.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714897/pexels-photo-3714897.jpeg"
         },
         {
           "id": "kerid",
@@ -693,7 +693,7 @@
           "free": false,
           "needsBooking": false,
           "visitMinutes": 40,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Iceland2009-BradWeber-Kerid.jpg/800px-Iceland2009-BradWeber-Kerid.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714899/pexels-photo-3714899.jpeg"
         },
         {
           "id": "secret-lagoon",
@@ -706,7 +706,7 @@
           "free": false,
           "needsBooking": true,
           "visitMinutes": 120,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Gamla_Laugin.jpg/800px-Gamla_Laugin.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg"
         }
       ],
       "campsitePlanA": "landmannalaugar",
@@ -754,7 +754,7 @@
           "needsBooking": false,
           "visitMinutes": 210,
           "weatherSensitive": true,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Blahnukur_mountain_Landmannalaugar.jpg/800px-Blahnukur_mountain_Landmannalaugar.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714925/pexels-photo-3714925.jpeg"
         },
         {
           "id": "fonte-landmannalaugar",
@@ -767,7 +767,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Landmannalaugar_hot_spring.jpg/800px-Landmannalaugar_hot_spring.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714926/pexels-photo-3714926.jpeg"
         }
       ],
       "campsitePlanA": "landmannalaugar",
@@ -808,7 +808,7 @@
           "needsBooking": false,
           "visitMinutes": 60,
           "weatherSensitive": true,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Seljalandsfoss_waterfall.jpg/800px-Seljalandsfoss_waterfall.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714900/pexels-photo-3714900.jpeg"
         },
         {
           "id": "skogafoss",
@@ -821,7 +821,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Sk%C3%B3gafoss_waterfall_in_Iceland.jpg/800px-Sk%C3%B3gafoss_waterfall_in_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714901/pexels-photo-3714901.jpeg"
         },
         {
           "id": "seljavallalaug",
@@ -835,7 +835,7 @@
           "needsBooking": false,
           "visitMinutes": 120,
           "note": "Caminhada de ~20 min ate a piscina.",
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Seljavallalaug_hot_pool.jpg/800px-Seljavallalaug_hot_pool.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714903/pexels-photo-3714903.jpeg"
         }
       ],
       "campsitePlanA": "skogar",
@@ -880,7 +880,7 @@
           "visitMinutes": 60,
           "weatherSensitive": true,
           "note": "PERIGO: ondas sneaker. Nunca de costas para o mar.",
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Reynisfjara%2C_Su%C3%B0urland%2C_Islandia%2C_2014-08-17%2C_DD_164.JPG/800px-Reynisfjara%2C_Su%C3%B0urland%2C_Islandia%2C_2014-08-17%2C_DD_164.JPG"
+          "imageUrl": "https://images.pexels.com/photos/3714902/pexels-photo-3714902.jpeg"
         },
         {
           "id": "eldfell",
@@ -894,7 +894,7 @@
           "needsBooking": false,
           "visitMinutes": 150,
           "weatherSensitive": true,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Eldheimar%2C_Heimaey%2C_Westman_Islands%2C_Iceland%2C_Summer_2015.jpg/800px-Eldheimar%2C_Heimaey%2C_Westman_Islands%2C_Iceland%2C_Summer_2015.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714908/pexels-photo-3714908.jpeg"
         },
         {
           "id": "eldheimar",
@@ -907,7 +907,7 @@
           "free": false,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Eldheimar_museum.jpg/800px-Eldheimar_museum.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714909/pexels-photo-3714909.jpeg"
         }
       ],
       "campsitePlanA": "vestmannaeyjar",
@@ -951,7 +951,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Fjadrargljufur_Canyon.jpg/800px-Fjadrargljufur_Canyon.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714904/pexels-photo-3714904.jpeg"
         },
         {
           "id": "svartifoss",
@@ -964,7 +964,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 120,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Svartifoss%2C_a_waterfall_in_Iceland.jpg/800px-Svartifoss%2C_a_waterfall_in_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714905/pexels-photo-3714905.jpeg"
         }
       ],
       "campsitePlanA": "skaftafell",
@@ -1008,7 +1008,7 @@
           "visitMinutes": 300,
           "weatherSensitive": true,
           "note": "Guia certificado obrigatorio.",
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Glacier_hiking_Iceland.jpg/800px-Glacier_hiking_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714927/pexels-photo-3714927.jpeg"
         },
         {
           "id": "jokulsarlon",
@@ -1021,7 +1021,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/J%C3%B6kuls%C3%A1rl%C3%B3n_glacier_lagoon_Iceland.jpg/800px-J%C3%B6kuls%C3%A1rl%C3%B3n_glacier_lagoon_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714906/pexels-photo-3714906.jpeg"
         },
         {
           "id": "diamond-beach",
@@ -1034,7 +1034,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 45,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Diamond_Beach_Iceland.jpg/800px-Diamond_Beach_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714907/pexels-photo-3714907.jpeg"
         }
       ],
       "campsitePlanA": "hofn",
@@ -1076,7 +1076,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 45,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Djupivogur_town_Iceland.jpg/800px-Djupivogur_town_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714910/pexels-photo-3714910.jpeg"
         },
         {
           "id": "seydisfjordur-vila",
@@ -1089,7 +1089,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Seydisfjordur_village_Iceland.jpg/800px-Seydisfjordur_village_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714911/pexels-photo-3714911.jpeg"
         },
         {
           "id": "vok-baths",
@@ -1102,7 +1102,7 @@
           "free": false,
           "needsBooking": true,
           "visitMinutes": 150,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Vok_Baths_Iceland.jpg/800px-Vok_Baths_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714912/pexels-photo-3714912.jpeg"
         }
       ],
       "campsitePlanA": "seydisfjordur",
@@ -1147,7 +1147,7 @@
           "needsBooking": false,
           "visitMinutes": 90,
           "weatherSensitive": true,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Dettifoss_Iceland.jpg/800px-Dettifoss_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714913/pexels-photo-3714913.jpeg"
         },
         {
           "id": "hverir",
@@ -1160,7 +1160,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Hverir_geothermal_area.jpg/800px-Hverir_geothermal_area.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714914/pexels-photo-3714914.jpeg"
         },
         {
           "id": "krafla",
@@ -1173,7 +1173,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Krafla_crater_lake.jpg/800px-Krafla_crater_lake.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714915/pexels-photo-3714915.jpeg"
         },
         {
           "id": "dimmuborgir",
@@ -1186,7 +1186,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Dimmuborgir_lava_field.jpg/800px-Dimmuborgir_lava_field.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714916/pexels-photo-3714916.jpeg"
         },
         {
           "id": "myvatn-baths",
@@ -1199,7 +1199,7 @@
           "free": false,
           "needsBooking": true,
           "visitMinutes": 150,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Myvatn_Nature_Baths.jpg/800px-Myvatn_Nature_Baths.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714917/pexels-photo-3714917.jpeg"
         }
       ],
       "campsitePlanA": "myvatn-hlid",
@@ -1244,7 +1244,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/G%C3%B3%C3%B0afoss_waterfall_Iceland.jpg/800px-G%C3%B3%C3%B0afoss_waterfall_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714918/pexels-photo-3714918.jpeg"
         },
         {
           "id": "akureyri",
@@ -1257,7 +1257,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 180,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Akureyri_town_Iceland.jpg/800px-Akureyri_town_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714919/pexels-photo-3714919.jpeg"
         }
       ],
       "campsitePlanA": "akureyri-hamrar",
@@ -1294,7 +1294,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Kirkjufell_mountain_Iceland.jpg/800px-Kirkjufell_mountain_Iceland.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714920/pexels-photo-3714920.jpeg"
         },
         {
           "id": "snaefellsjokull",
@@ -1308,7 +1308,7 @@
           "needsBooking": false,
           "visitMinutes": 120,
           "weatherSensitive": true,
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Snaefellsjokull_glacier_mountain.jpg/800px-Snaefellsjokull_glacier_mountain.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714921/pexels-photo-3714921.jpeg"
         }
       ],
       "campsitePlanA": "arnarstapi",
@@ -1351,7 +1351,7 @@
           "needsBooking": true,
           "visitMinutes": 360,
           "note": "So se o Dia 2 foi cancelado.",
-          "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Thrihnukagigur_inside_volcano.jpg/800px-Thrihnukagigur_inside_volcano.jpg"
+          "imageUrl": "https://images.pexels.com/photos/3714924/pexels-photo-3714924.jpeg"
         }
       ],
       "campsitePlanA": "reykjanesbaer",
