@@ -291,7 +291,6 @@ function Roteiro() {
             <GroupCard title="Destaques" count={day.highlights.length}>
               {day.highlights.map((h) => (
                 <a key={h.id} className="row" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.name + ", Iceland")}`} target="_blank" rel="noreferrer">
-                  <Badge color={KIND[h.kind].color} icon={KIND[h.kind].icon} />
                   {h.imageUrl && <HighlightImage imageUrl={h.imageUrl} highlightId={h.id} />}
                   <div className="row-body">
                     <div className="row-top"><h4>{h.name}</h4><span className="dist">~{h.visitMinutes}min</span></div>

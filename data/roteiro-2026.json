@@ -556,7 +556,7 @@
           "needsBooking": true,
           "visitMinutes": 90,
           "note": "Perguntar sobre cobertura para F-roads e cascalho.",
-          "imageUrl": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop"
+          "imageUrl": "https://images.unsplash.com/photo-1577365865183-1dfb51e9d6e5?w=400&h=300&fit=crop"
         },
         {
           "id": "reykjavik-centro",
@@ -653,7 +653,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "imageUrl": "https://images.unsplash.com/photo-1549982501-bdc5ca1c9c25?w=400&h=300&fit=crop"
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "geysir",
@@ -666,7 +666,7 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "imageUrl": "https://images.unsplash.com/photo-1512732695100-98a1a088edcc?w=400&h=300&fit=crop"
+          "imageUrl": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop"
         },
         {
           "id": "gullfoss",
@@ -706,7 +706,7 @@
           "free": false,
           "needsBooking": true,
           "visitMinutes": 120,
-          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
+          "imageUrl": "https://images.unsplash.com/photo-1512732695100-98a1a088edcc?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "landmannalaugar",
