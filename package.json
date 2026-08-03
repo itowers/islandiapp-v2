@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "download-images": "node scripts/download-highlights.mjs",
+    "update-image-urls": "node scripts/update-image-urls.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",
