@@ -1,42 +1,75 @@
 import React, { useState, useMemo, createContext, useContext } from "react";
-import roteiro from "../data/roteiro.json";
 import linkGroups from "../data/links.json";
+import {
+  dias,
+  riscos,
+  voos,
+  emergencia,
+  notasCamping,
+  reservasAntecipadas,
+  checklistReservas,
+  banhosTermaisNaturais,
+  banhosPerigosos,
+  checagemDiariaObrigatoria,
+  equipamentos,
+  pendenciasGerais,
+  notasContexto,
+  meta,
+  RISK_LABEL,
+  drivingLabel,
+  regionLabel,
+  triggerLabel,
+} from "./engine/roteiroLoader.ts";
 
 /* ──────────────────────────────────────────────────────────────
    Islandiapp — roteiro de camper van pela Islândia
-   Os dados da viagem (dias, atividades, campings, links) vivem em
-   /data/roteiro.json e /data/links.json — edite lá, não aqui.
+   Os dados da viagem vivem em /data/roteiro-2026.json (contrato em
+   src/data/types.ts, resolvido por src/engine/roteiroLoader.ts) e
+   /data/links.json — edite lá, não aqui.
    ────────────────────────────────────────────────────────────── */
 
 const ThemeCtx = createContext("dark");
 const ThemeSetterCtx = createContext({ setTheme: () => {} });
 
-const CAT_DARK = {
-  C: { label: "Cachoeira", color: "#3B82F6", icon: "drop" },
-  H: { label: "Hike", color: "#2FB35C", icon: "hike" },
-  A: { label: "Atração", color: "#8B5CF6", icon: "star" },
-  T: { label: "Termal", color: "#F5A524", icon: "flame" },
+const KIND_DARK = {
+  town: { label: "Cidade", color: "#6E7681", icon: "building" },
+  tour: { label: "Tour", color: "#8B5CF6", icon: "star" },
+  canyon: { label: "Cânion", color: "#2FB35C", icon: "mountain" },
+  hotspring: { label: "Termal", color: "#F5A524", icon: "flame" },
+  crater: { label: "Cratera", color: "#DB6D28", icon: "circle-dot" },
+  lagoon: { label: "Lagoa", color: "#3B82F6", icon: "wave" },
+  waterfall: { label: "Cachoeira", color: "#3B82F6", icon: "drop" },
+  beach: { label: "Praia", color: "#F5A524", icon: "wave" },
+  volcano: { label: "Vulcão", color: "#FF6B4A", icon: "mountain" },
+  museum: { label: "Museu", color: "#8B5CF6", icon: "camera" },
+  glacier: { label: "Geleira", color: "#58A6FF", icon: "mountain" },
 };
-const CAT_LIGHT = {
-  C: { label: "Cachoeira", color: "#2F7BE0", icon: "drop" },
-  H: { label: "Hike", color: "#1F9D55", icon: "hike" },
-  A: { label: "Atração", color: "#7C5CE0", icon: "star" },
-  T: { label: "Termal", color: "#E08A00", icon: "flame" },
+const KIND_LIGHT = {
+  town: { label: "Cidade", color: "#8B8B92", icon: "building" },
+  tour: { label: "Tour", color: "#7C5CE0", icon: "star" },
+  canyon: { label: "Cânion", color: "#1F9D55", icon: "mountain" },
+  hotspring: { label: "Termal", color: "#E08A00", icon: "flame" },
+  crater: { label: "Cratera", color: "#B85A1E", icon: "circle-dot" },
+  lagoon: { label: "Lagoa", color: "#2F7BE0", icon: "wave" },
+  waterfall: { label: "Cachoeira", color: "#2F7BE0", icon: "drop" },
+  beach: { label: "Praia", color: "#E08A00", icon: "wave" },
+  volcano: { label: "Vulcão", color: "#E85D3A", icon: "mountain" },
+  museum: { label: "Museu", color: "#7C5CE0", icon: "camera" },
+  glacier: { label: "Geleira", color: "#2F7BE0", icon: "mountain" },
 };
-const CLS_DARK = {
-  1: { label: "Imperdível", color: "#FF6B4A" },
-  2: { label: "Legal", color: "#58A6FF" },
-  3: { label: "Passável", color: "#6E7681" },
-};
-const CLS_LIGHT = {
-  1: { label: "Imperdível", color: "#E85D3A" },
-  2: { label: "Legal", color: "#2F7BE0" },
-  3: { label: "Passável", color: "#8B8B92" },
-};
+const RISK_DARK = { low: "#2FB35C", medium: "#F5A524", high: "#FF6B4A" };
+const RISK_LIGHT = { low: "#1F9D55", medium: "#E08A00", high: "#E85D3A" };
 const CAMP_COLOR = { dark: { open: "#2FB35C", season: "#DB6D28" }, light: { open: "#1F9D55", season: "#E08A00" } };
 const LINK_COLOR = {
   dark: { compass: "#3B82F6", tent: "#2FB35C", coin: "#F5A524", alert: "#FF6B4A" },
   light: { compass: "#2F7BE0", tent: "#1F9D55", coin: "#E08A00", alert: "#E85D3A" },
+};
+
+const CHECK_META = {
+  road: { label: "Estradas", pattern: /road/i },
+  safetravel: { label: "SafeTravel", pattern: /safetravel/i },
+  ferry: { label: "Ferry", pattern: /ferry/i },
+  volcano: { label: "Vulcânico", pattern: /safetravel/i },
 };
 
 /* ── ícones ────────────────────────────────────────────────── */
@@ -64,6 +97,15 @@ function Icon({ name, size = 20 }) {
     case "bolt": return <svg {...p}><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" /></svg>;
     case "sun": return <svg {...p}><circle cx="12" cy="12" r="4.2" /><path d="M12 2.5v2.4M12 19v2.4M21.5 12h-2.4M4.9 12H2.5M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7M18.4 18.4l-1.7-1.7M7.3 7.3 5.6 5.6" /></svg>;
     case "moon": return <svg {...p}><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" /></svg>;
+    case "mountain": return <svg {...p}><path d="M3 20L9 8l4 6 2-3 6 9H3z" /></svg>;
+    case "wave": return <svg {...p}><path d="M2 15c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M2 20c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2" /></svg>;
+    case "camera": return <svg {...p}><path d="M4 8h3l2-2h6l2 2h3v11H4z" /><circle cx="12" cy="13.5" r="3.3" /></svg>;
+    case "circle-dot": return <svg {...p}><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none" /></svg>;
+    case "building": return <svg {...p}><path d="M5 21V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v16M13 21V9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v12" /><path d="M3 21h18M8 8h.01M8 12h.01M8 16h.01" /></svg>;
+    case "plane": return <svg {...p}><path d="M3 13l7-2 5-8 2 1-3 8 6 1v2l-6 1 3 8-2 1-5-8-7-2v-2z" /></svg>;
+    case "shirt": return <svg {...p}><path d="M8 4l4 2 4-2 4 4-3 3v11H7V11L4 8l4-4z" /></svg>;
+    case "info": return <svg {...p}><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" /></svg>;
+    case "cart": return <svg {...p}><circle cx="9" cy="20" r="1.3" fill="currentColor" stroke="none" /><circle cx="17" cy="20" r="1.3" fill="currentColor" stroke="none" /><path d="M3 4h2l2.4 12h9.6l2-8H6" /></svg>;
     default: return null;
   }
 }
@@ -91,7 +133,7 @@ function GroupCard({ title, count, children }) {
   );
 }
 
-function TipCard({ note }) {
+function TipCard({ title = "Fique atento", note }) {
   const [open, setOpen] = useState(true);
   if (!open || !note) return null;
   return (
@@ -100,7 +142,7 @@ function TipCard({ note }) {
         <div className="tip-icon"><Icon name="alert" size={17} /></div>
         <button className="tip-x" onClick={() => setOpen(false)} aria-label="dispensar"><Icon name="x" size={15} /></button>
       </div>
-      <h4>Fique atento</h4>
+      <h4>{title}</h4>
       <p>{note}</p>
     </div>
   );
@@ -116,31 +158,98 @@ function ThemeToggle() {
   );
 }
 
+function TopBar({ icon, title }) {
+  return (
+    <div className="topline">
+      <div className="wordmark">
+        <div className="logo"><Icon name={icon} size={18} /></div>
+        <span>{title}</span>
+      </div>
+      <ThemeToggle />
+    </div>
+  );
+}
+
+/* ── linha de amenidade de camping (não clicável) ────────────── */
+function Amenity({ ok, icon, label }) {
+  return (
+    <span className={ok ? "amenity on" : "amenity"}>
+      <Icon name={icon} size={13} /> {label}
+    </span>
+  );
+}
+
+function CampsiteCard({ campsite, tag }) {
+  const theme = useContext(ThemeCtx);
+  const camp = theme === "light" ? CAMP_COLOR.light : CAMP_COLOR.dark;
+  if (!campsite) return null;
+  const open = !campsite.seasonEnd;
+  return (
+    <a className="row" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(campsite.name + ", Iceland")}`} target="_blank" rel="noreferrer">
+      <Badge color={open ? camp.open : camp.season} icon="tent" />
+      <div className="row-body">
+        <div className="row-top"><h4>{campsite.name}</h4>{tag && <span className="dist">{tag}</span>}</div>
+        {campsite.notes && <p>{campsite.notes}</p>}
+        <div className="amenities">
+          <Amenity ok={campsite.dumpStation} icon="fuel" label="descarte" />
+          <Amenity ok={campsite.electricity} icon="bolt" label="energia" />
+          <Amenity ok={campsite.hotShower} icon="drop" label="chuveiro" />
+          <Amenity ok={campsite.laundry} icon="shirt" label="lavanderia" />
+        </div>
+        <div className="row-tags">
+          <i style={{ background: open ? camp.open : camp.season }} />
+          {campsite.seasonEnd ? `abre até ${campsite.seasonEnd}` : "ano todo"}
+          <span className="sep">·</span>vento {campsite.windExposure}
+          <span className="sep">·</span>poluição luminosa {campsite.lightPollution}/3
+        </div>
+      </div>
+      <Icon name="chevron-right" size={16} />
+    </a>
+  );
+}
+
+function RiskRow({ risk }) {
+  return (
+    <div className="risk-row">
+      <div className="risk-row-top">
+        <h4>{risk.label}</h4>
+        {risk.isAnchor && <span className="anchor-tag">âncora</span>}
+      </div>
+      <p className="risk-trigger">{triggerLabel(risk.trigger)}</p>
+      {risk.operator && (
+        <a className="risk-op" href={risk.operator.url} target="_blank" rel="noreferrer">
+          {risk.operator.name} <Icon name="up-right" size={12} />
+        </a>
+      )}
+      {risk.rescheduleWindow && (
+        <p className="risk-line"><b>Janela de remarcação:</b> Dia {risk.rescheduleWindow.dayN} · {risk.rescheduleWindow.period === "morning" ? "manhã" : risk.rescheduleWindow.period === "afternoon" ? "tarde" : "noite"}</p>
+      )}
+      <p className="risk-line"><b>Plano B:</b> {risk.planB.description}</p>
+      <p className="risk-line"><b>Plano C:</b> {risk.planC.description}</p>
+    </div>
+  );
+}
+
 /* ── tela: roteiro ─────────────────────────────────────────── */
 function Roteiro() {
   const theme = useContext(ThemeCtx);
-  const CAT = theme === "light" ? CAT_LIGHT : CAT_DARK;
-  const CLS = theme === "light" ? CLS_LIGHT : CLS_DARK;
-  const camp = theme === "light" ? CAMP_COLOR.light : CAMP_COLOR.dark;
+  const KIND = theme === "light" ? KIND_LIGHT : KIND_DARK;
+  const RISKCOLOR = theme === "light" ? RISK_LIGHT : RISK_DARK;
 
   const [d, setD] = useState(0);
-  const [tab, setTab] = useState("act");
-  const [sort, setSort] = useState("prox");
-  const [cats, setCats] = useState([]);
-  const [q, setQ] = useState("");
-  const [searching, setSearching] = useState(false);
-  const day = roteiro[d];
-  const toggle = (c) => setCats((p) => (p.includes(c) ? p.filter((x) => x !== c) : [...p, c]));
+  const [tab, setTab] = useState("dest");
+  const day = dias[d];
 
-  const list = useMemo(() => {
-    let l = day.atividades.map((x, i) => ({ ...x, i }));
-    if (cats.length) l = l.filter((x) => cats.includes(x.categoria));
-    if (q.trim()) l = l.filter((x) => x.nome.toLowerCase().includes(q.trim().toLowerCase()));
-    if (sort === "class") l = [...l].sort((a, b) => a.classificacao - b.classificacao || a.i - b.i);
-    return l;
-  }, [d, cats, sort, q, day]);
-
-  const here = ["C", "H", "A", "T"].filter((c) => day.atividades.some((x) => x.categoria === c));
+  const tipNote = useMemo(() => {
+    const bits = [];
+    if (day.mandatoryChecks.length) {
+      bits.push(`Checar antes de sair: ${day.mandatoryChecks.map((c) => CHECK_META[c].label).join(", ")}.`);
+    }
+    if (day.risks.length) {
+      bits.push(`Atenção: ${day.risks.map((r) => r.label).join("; ")}.`);
+    }
+    return bits.join(" ");
+  }, [day]);
 
   return (
     <>
@@ -149,161 +258,100 @@ function Roteiro() {
           <div className="logo"><Icon name="map" size={18} /></div>
           <span>Islandiapp</span>
         </div>
-        <div className="toprow-actions">
-          <ThemeToggle />
-          <button className="circle-btn" onClick={() => { setSearching((s) => !s); setQ(""); }} aria-label="buscar atividade">
-            <Icon name={searching ? "x" : "search"} size={18} />
-          </button>
-        </div>
+        <ThemeToggle />
       </div>
-
-      {searching && (
-        <div className="searchbar">
-          <Icon name="search" size={16} />
-          <input autoFocus placeholder="Buscar uma parada..." value={q} onChange={(e) => setQ(e.target.value)} />
-        </div>
-      )}
 
       <div className="daynav">
         <button className="circle-btn" onClick={() => setD((v) => Math.max(0, v - 1))} disabled={d === 0} aria-label="dia anterior"><Icon name="chevron-left" size={18} /></button>
         <div className="daynav-mid" key={d}>
-          <h1>Dia {day.dia} <span>· {day.regiao}</span></h1>
-          <p>{day.data} — {day.km} km · {day.duracao} ao volante</p>
+          <h1>Dia {day.n} <span>· {regionLabel(day.region)}</span></h1>
+          <p>{day.narrativa.diaSemana} {day.date} — {drivingLabel(day.drivingMinutes)} ao volante</p>
+          <div className="daynav-tags">
+            <span className="risk-chip" style={{ color: RISKCOLOR[day.risk] }}><i style={{ background: RISKCOLOR[day.risk] }} />{RISK_LABEL[day.risk]}</span>
+            {day.isAnchor && <span className="anchor-tag">dia âncora</span>}
+          </div>
         </div>
-        <button className="circle-btn" onClick={() => setD((v) => Math.min(roteiro.length - 1, v + 1))} disabled={d === roteiro.length - 1} aria-label="próximo dia"><Icon name="chevron-right" size={18} /></button>
+        <button className="circle-btn" onClick={() => setD((v) => Math.min(dias.length - 1, v + 1))} disabled={d === dias.length - 1} aria-label="próximo dia"><Icon name="chevron-right" size={18} /></button>
       </div>
 
       <div className="scroll" key={d}>
-        <TipCard note={day.nota} />
+        <TipCard note={tipNote} />
 
         <div className="segs">
-          <button className={tab === "act" ? "seg on" : "seg"} onClick={() => setTab("act")}>Atividades</button>
-          <button className={tab === "cmp" ? "seg on" : "seg"} onClick={() => setTab("cmp")}>Campings</button>
+          <button className={tab === "dest" ? "seg on" : "seg"} onClick={() => setTab("dest")}>Destaques</button>
+          <button className={tab === "cmp" ? "seg on" : "seg"} onClick={() => setTab("cmp")}>Camping</button>
+          <button className={tab === "risk" ? "seg on" : "seg"} onClick={() => setTab("risk")}>Riscos</button>
         </div>
 
-        {tab === "act" && (
-          <div className="pills">
-            <button className="pill dropdown" onClick={() => setSort(sort === "prox" ? "class" : "prox")}>
-              {sort === "prox" ? "Proximidade" : "Classificação"} <Icon name="chevron-down" size={13} />
-            </button>
-            {here.map((c) => (
-              <button key={c} className={cats.includes(c) ? "pill on" : "pill"} onClick={() => toggle(c)} aria-pressed={cats.includes(c)}>{CAT[c].label}</button>
-            ))}
-            {cats.length > 0 && <button className="pill ghost" onClick={() => setCats([])}>Limpar</button>}
-          </div>
-        )}
-
-        {tab === "act" ? (
-          list.length === 0 ? (
-            <GroupCard>
-              <div className="empty-row">
-                <p>Nenhuma parada encontrada.</p>
-                <button className="cta-ghost" onClick={() => { setCats([]); setQ(""); }}>Ver todas</button>
-              </div>
-            </GroupCard>
+        {tab === "dest" && (
+          day.highlights.length === 0 ? (
+            <GroupCard><div className="empty-row"><p>Nenhum destaque marcado pra esse dia.</p></div></GroupCard>
           ) : (
-            <GroupCard title="Atividades" count={list.length}>
-              {list.map((x) => (
-                <a key={x.nome} className="row" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.nome + ", Iceland")}`} target="_blank" rel="noreferrer">
-                  <Badge color={CAT[x.categoria].color} icon={CAT[x.categoria].icon} />
+            <GroupCard title="Destaques" count={day.highlights.length}>
+              {day.highlights.map((h) => (
+                <a key={h.id} className="row" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.name + ", Iceland")}`} target="_blank" rel="noreferrer">
+                  <Badge color={KIND[h.kind].color} icon={KIND[h.kind].icon} />
                   <div className="row-body">
-                    <div className="row-top"><h4>{x.nome}</h4><span className="dist">{x.distancia}</span></div>
-                    <p>{x.descricao}</p>
-                    <div className="row-tags"><i style={{ background: CLS[x.classificacao].color }} />{CLS[x.classificacao].label}<span className="sep">·</span>{CAT[x.categoria].label}</div>
+                    <div className="row-top"><h4>{h.name}</h4><span className="dist">~{h.visitMinutes}min</span></div>
+                    {h.note && <p>{h.note}</p>}
+                    <div className="row-tags">
+                      <i style={{ background: KIND[h.kind].color }} />{KIND[h.kind].label}
+                      <span className="sep">·</span>{h.free ? "grátis" : "pago"}
+                      {h.needsBooking && <><span className="sep">·</span>reserva</>}
+                      {h.weatherSensitive && <><span className="sep">·</span>sensível ao tempo</>}
+                    </div>
                   </div>
                   <Icon name="chevron-right" size={16} />
                 </a>
               ))}
             </GroupCard>
           )
-        ) : day.campings.length === 0 ? (
-          <GroupCard title="Campings">
-            <div className="empty-row">
-              <p>Sem pernoite marcado pra esse dia.</p>
-            </div>
-          </GroupCard>
-        ) : (
-          <GroupCard title="Campings" count={day.campings.length}>
-            {day.campings.map((c) => (
-              <a key={c.nome} className="row" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.nome + ", Iceland")}`} target="_blank" rel="noreferrer">
-                <Badge color={c.disponibilidade === "ano todo" ? camp.open : camp.season} icon="tent" />
-                <div className="row-body">
-                  <div className="row-top"><h4>{c.nome}</h4><span className="dist">{c.preco}</span></div>
-                  <p>{c.descricao}</p>
-                  <div className="row-tags"><i style={{ background: c.disponibilidade === "ano todo" ? camp.open : camp.season }} />{c.disponibilidade}</div>
-                </div>
-                <Icon name="chevron-right" size={16} />
-              </a>
-            ))}
-          </GroupCard>
+        )}
+
+        {tab === "cmp" && (
+          <>
+            <GroupCard title="Plano A">
+              <CampsiteCard campsite={day.campsiteA} />
+            </GroupCard>
+            {day.campsiteB && (
+              <GroupCard title="Plano B">
+                <CampsiteCard campsite={day.campsiteB} />
+              </GroupCard>
+            )}
+            <GroupCard title="Plano C">
+              <div className="empty-row" style={{ textAlign: "left" }}>
+                <p style={{ margin: 0 }}>{day.narrativa.campingPlanoCTexto}</p>
+              </div>
+            </GroupCard>
+          </>
+        )}
+
+        {tab === "risk" && (
+          day.risks.length === 0 ? (
+            <GroupCard><div className="empty-row"><p>Nenhum risco mapeado para esse dia.</p></div></GroupCard>
+          ) : (
+            <GroupCard title="Riscos do dia" count={day.risks.length}>
+              {day.risks.map((r) => <RiskRow key={r.id} risk={r} />)}
+            </GroupCard>
+          )
         )}
       </div>
     </>
   );
 }
 
-/* ── tela: conversor ───────────────────────────────────────── */
-function Conversor() {
-  const theme = useContext(ThemeCtx);
-  const [rate, setRate] = useState(0.043);
-  const [isk, setIsk] = useState(5000);
-  const [litro, setLitro] = useState(320);
-  const [cons, setCons] = useState(9);
-  const km = roteiro.reduce((s, x) => s + x.km, 0);
-  const num = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const combustivel = (km / cons) * litro;
-  const c1 = theme === "light" ? "#2F7BE0" : "#58A6FF";
-  const c2 = theme === "light" ? "#8B8B92" : "#6E7681";
-  const c3 = theme === "light" ? "#E08A00" : "#F5A524";
-  const c4 = theme === "light" ? "#1F9D55" : "#2FB35C";
-
+/* ── tela: riscos (visão geral) ────────────────────────────── */
+function Riscos() {
   return (
     <>
-      <div className="topline">
-        <div className="wordmark"><div className="logo"><Icon name="swap" size={18} /></div><span>Conversor</span></div>
-        <ThemeToggle />
-      </div>
-
-      <div className="hero">
-        <p className="hero-sub">{isk.toLocaleString("pt-BR")} ISK equivalem a</p>
-        <h1 className="hero-num">R$ {num(isk * rate)}</h1>
-      </div>
-
+      <TopBar icon="alert" title="Riscos" />
       <div className="scroll">
-        <div className="pills">
-          {[500, 1000, 2500, 5000, 12000].map((v) => (
-            <button key={v} className={isk === v ? "pill on" : "pill"} onClick={() => setIsk(v)}>{v.toLocaleString("pt-BR")}</button>
-          ))}
-        </div>
-
-        <GroupCard title="Ajustar">
-          <div className="field-row">
-            <Badge color={c1} icon="swap" size={40} />
-            <div className="field-body"><span>Valor em ISK</span><input type="number" value={isk} onChange={(e) => setIsk(+e.target.value || 0)} /></div>
-          </div>
-          <div className="field-row">
-            <Badge color={c2} icon="coin" size={40} />
-            <div className="field-body"><span>Cotação · 1 ISK em R$</span><input type="number" step="0.001" value={rate} onChange={(e) => setRate(+e.target.value || 0)} /></div>
-          </div>
-        </GroupCard>
-
-        <GroupCard title="Combustível dos 14 dias">
-          <div className="field-row">
-            <Badge color={c3} icon="fuel" size={40} />
-            <div className="field-body"><span>Diesel · ISK/litro</span><input type="number" value={litro} onChange={(e) => setLitro(+e.target.value || 0)} /></div>
-          </div>
-          <div className="field-row">
-            <Badge color={c4} icon="bolt" size={40} />
-            <div className="field-body"><span>Consumo · km/litro</span><input type="number" value={cons} onChange={(e) => setCons(+e.target.value || 1)} /></div>
-          </div>
-          <div className="total-row"><span>{km.toLocaleString("pt-BR")} km de roteiro</span><b>R$ {num(combustivel)}</b></div>
-        </GroupCard>
-
-        <GroupCard title="Referência rápida">
-          {[["Camping por pessoa", 2800], ["Noite pros dois", 5500], ["Cerveja no bar", 1400], ["Prato no restaurante", 4500], ["Mercado por dia", 4000], ["Piscina municipal", 1200]].map(([k, v]) => (
-            <div className="ref-row" key={k}>
-              <span>{k}</span>
-              <div className="ref-vals"><b>{v.toLocaleString("pt-BR")} ISK</b><em>R$ {num(v * rate)}</em></div>
+        <p className="page-sub">Gatilhos, planos B e C de cada risco mapeado na viagem.</p>
+        <GroupCard title="Todos os riscos" count={riscos.length}>
+          {riscos.map((r) => (
+            <div key={r.id} className="risk-block">
+              <p className="risk-days">Dia{r.dayNumbers.length > 1 ? "s" : ""} {r.dayNumbers.join(", ")}</p>
+              <RiskRow risk={r} />
             </div>
           ))}
         </GroupCard>
@@ -312,18 +360,133 @@ function Conversor() {
   );
 }
 
-/* ── tela: links úteis ─────────────────────────────────────── */
-function Links() {
-  const theme = useContext(ThemeCtx);
-  const colors = theme === "light" ? LINK_COLOR.light : LINK_COLOR.dark;
+/* ── tela: reservas ────────────────────────────────────────── */
+function Reservas() {
+  const byId = useMemo(() => Object.fromEntries(reservasAntecipadas.map((r) => [r.id, r])), []);
   return (
     <>
-      <div className="topline">
-        <div className="wordmark"><div className="logo"><Icon name="link" size={18} /></div><span>Links úteis</span></div>
-        <ThemeToggle />
-      </div>
+      <TopBar icon="cart" title="Reservas" />
       <div className="scroll">
-        <p className="page-sub">Salve offline antes de sair de Reykjavík — a estrada 1 tem sinal fraco.</p>
+        <GroupCard title="Reservas antecipadas" count={reservasAntecipadas.length}>
+          {reservasAntecipadas.map((r) => (
+            <div key={r.id} className="risk-row">
+              <div className="risk-row-top">
+                <h4>{r.nome}</h4>
+                <span className={r.tipoRisco === "ancora" ? "anchor-tag" : "flex-tag"}>{r.tipoRisco === "ancora" ? "âncora" : "flexível"}</span>
+              </div>
+              <p className="risk-trigger">Dia {r.dia} · {r.data}{r.horario ? ` · ${r.horario}` : ""} — {r.site}</p>
+              {r.observacao && <p className="risk-line">{r.observacao}</p>}
+              {r.planoB && <p className="risk-line"><b>Plano B:</b> {r.planoB.descricao} (Dia {r.planoB.dia} · {r.planoB.data})</p>}
+              {r.planoC && <p className="risk-line"><b>Plano C:</b> {r.planoC}</p>}
+            </div>
+          ))}
+        </GroupCard>
+
+        <GroupCard title="Comprar esta semana">
+          {checklistReservas.estaSemana.map((id) => (
+            <div key={id} className="row" style={{ textDecoration: "none" }}>
+              <Badge color="#FF6B4A" icon="alert" size={36} />
+              <div className="row-body"><h4>{byId[id]?.nome ?? id}</h4></div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Próximas semanas">
+          {checklistReservas.proximasSemanas.map((id) => (
+            <div key={id} className="row" style={{ textDecoration: "none" }}>
+              <Badge color="#F5A524" icon="cart" size={36} />
+              <div className="row-body"><h4>{byId[id]?.nome ?? id}</h4></div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Mais perto da viagem">
+          {checklistReservas.maisPertoDaViagem.map((it) => (
+            <div key={it.item} className="row" style={{ textDecoration: "none" }}>
+              <Badge color="#3B82F6" icon="info" size={36} />
+              <div className="row-body"><h4>{it.item}</h4>{(it.dias || it.onde) && <p>{[it.dias, it.onde].filter(Boolean).join(" · ")}</p>}</div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Já resolvido">
+          {checklistReservas.jaResolvido.map((it) => (
+            <div key={it.item} className="row" style={{ textDecoration: "none" }}>
+              <Badge color="#2FB35C" icon="star" size={36} />
+              <div className="row-body"><h4>{it.item}</h4><p>{it.status}</p></div>
+            </div>
+          ))}
+        </GroupCard>
+      </div>
+    </>
+  );
+}
+
+/* ── tela: info (voos, emergência, equipamentos, links, conversor) ── */
+function Info() {
+  const theme = useContext(ThemeCtx);
+  const colors = theme === "light" ? LINK_COLOR.light : LINK_COLOR.dark;
+
+  const defaultKm = Math.round((dias.reduce((s, d) => s + d.drivingMinutes, 0) / 60) * 70 / 10) * 10;
+  const [rate, setRate] = useState(0.043);
+  const [isk, setIsk] = useState(5000);
+  const [litro, setLitro] = useState(320);
+  const [cons, setCons] = useState(9);
+  const [km, setKm] = useState(defaultKm);
+  const num = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const combustivel = (km / cons) * litro;
+
+  return (
+    <>
+      <TopBar icon="info" title="Info" />
+      <div className="scroll">
+        <p className="page-sub">{meta.viagem.inicio} a {meta.viagem.fim} · {meta.viagem.dias} dias · {meta.viagem.transporte}</p>
+
+        <GroupCard title="Voos · ida">
+          {voos.ida.map((v) => (
+            <div key={v.trecho} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.compass} icon="plane" size={36} />
+              <div className="row-body">
+                <h4>{v.trecho}</h4>
+                <p>{v.partida ? `Partida ${v.partida}` : v.chegada ? `Chegada ${v.chegada}` : v.duracaoHoras ? `${v.duracaoHoras}h` : ""}{v.observacao ? ` — ${v.observacao}` : ""}</p>
+              </div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Voos · volta">
+          {voos.volta.map((v) => (
+            <div key={v.trecho} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.compass} icon="plane" size={36} />
+              <div className="row-body">
+                <h4>{v.trecho}</h4>
+                <p>{v.partida ? `Partida ${v.partida}` : ""}{v.chegadaBrasil ? ` — chegada Brasil ${v.chegadaBrasil}` : ""}</p>
+              </div>
+            </div>
+          ))}
+        </GroupCard>
+
+        <GroupCard title="Emergência">
+          <a className="row" href={`tel:${emergencia.numero}`}>
+            <Badge color={colors.alert} icon="alert" size={40} />
+            <div className="row-body"><h4>{emergencia.numero}</h4><p>Número único de emergência</p></div>
+          </a>
+          <a className="row" href={emergencia.app.url} target="_blank" rel="noreferrer">
+            <Badge color={colors.alert} icon="alert" size={40} />
+            <div className="row-body"><h4>{emergencia.app.nome}</h4><p>App de emergência</p></div>
+          </a>
+          <a className="row" href={emergencia.planoDeViagem} target="_blank" rel="noreferrer">
+            <Badge color={colors.compass} icon="compass" size={40} />
+            <div className="row-body"><h4>Registrar plano de viagem</h4><p>{emergencia.planoDeViagem}</p></div>
+          </a>
+          <a className="row" href={`tel:${emergencia.campervan.telefone}`}>
+            <Badge color={colors.tent} icon="tent" size={40} />
+            <div className="row-body"><h4>{emergencia.campervan.nome}</h4><p>{emergencia.campervan.telefone}</p></div>
+          </a>
+        </GroupCard>
+
+        <GroupCard title="Checagem diária obrigatória">
+          <div className="empty-row" style={{ textAlign: "left" }}>
+            <p style={{ margin: 0 }}>{checagemDiariaObrigatoria.quando}: {checagemDiariaObrigatoria.sites.join(", ")}</p>
+          </div>
+        </GroupCard>
+
         {linkGroups.map((g) => (
           <GroupCard key={g.grupo} title={g.grupo} count={g.itens.length}>
             {g.itens.map((it) => (
@@ -335,6 +498,103 @@ function Links() {
             ))}
           </GroupCard>
         ))}
+
+        <GroupCard title="Banhos termais naturais" count={banhosTermaisNaturais.length}>
+          {banhosTermaisNaturais.map((b) => (
+            <div key={b.nome} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.tent} icon="flame" size={36} />
+              <div className="row-body">
+                <h4>{b.nome}</h4>
+                <p>Dia {Array.isArray(b.dia) ? b.dia.join("-") : b.dia} · {b.regiao} — {b.tipo} · {b.precoReserva}</p>
+              </div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Banhos perigosos — não entrar" count={banhosPerigosos.length}>
+          {banhosPerigosos.map((b) => (
+            <div key={b.nome} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.alert} icon="alert" size={36} />
+              <div className="row-body"><h4>{b.nome}</h4><p>{b.regiao} — {b.motivo}</p></div>
+            </div>
+          ))}
+        </GroupCard>
+
+        <GroupCard title="Equipamentos comprados">
+          {equipamentos.comprados.map((e) => (
+            <div key={e} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.tent} icon="shirt" size={32} />
+              <div className="row-body"><h4>{e}</h4></div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Equipamentos pendentes">
+          {equipamentos.pendentes.map((e) => (
+            <div key={e} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.coin} icon="shirt" size={32} />
+              <div className="row-body"><h4>{e}</h4></div>
+            </div>
+          ))}
+        </GroupCard>
+
+        <GroupCard title="Notas de camping">
+          {notasCamping.map((n, i) => (
+            <div key={i} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.tent} icon="tent" size={32} />
+              <div className="row-body"><p style={{ margin: 0 }}>{n}</p></div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Pendências gerais">
+          {pendenciasGerais.map((n, i) => (
+            <div key={i} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.coin} icon="info" size={32} />
+              <div className="row-body"><p style={{ margin: 0 }}>{n}</p></div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Notas de contexto">
+          {notasContexto.map((n, i) => (
+            <div key={i} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.compass} icon="compass" size={32} />
+              <div className="row-body"><p style={{ margin: 0 }}>{n}</p></div>
+            </div>
+          ))}
+        </GroupCard>
+
+        <div className="hero">
+          <p className="hero-sub">{isk.toLocaleString("pt-BR")} ISK equivalem a</p>
+          <h1 className="hero-num">R$ {num(isk * rate)}</h1>
+        </div>
+        <div className="pills">
+          {[500, 1000, 2500, 5000, 12000].map((v) => (
+            <button key={v} className={isk === v ? "pill on" : "pill"} onClick={() => setIsk(v)}>{v.toLocaleString("pt-BR")}</button>
+          ))}
+        </div>
+        <GroupCard title="Ajustar">
+          <div className="field-row">
+            <Badge color="#58A6FF" icon="swap" size={40} />
+            <div className="field-body"><span>Valor em ISK</span><input type="number" value={isk} onChange={(e) => setIsk(+e.target.value || 0)} /></div>
+          </div>
+          <div className="field-row">
+            <Badge color="#6E7681" icon="coin" size={40} />
+            <div className="field-body"><span>Cotação · 1 ISK em R$</span><input type="number" step="0.001" value={rate} onChange={(e) => setRate(+e.target.value || 0)} /></div>
+          </div>
+        </GroupCard>
+        <GroupCard title="Combustível da viagem">
+          <div className="field-row">
+            <Badge color="#F5A524" icon="fuel" size={40} />
+            <div className="field-body"><span>Diesel · ISK/litro</span><input type="number" value={litro} onChange={(e) => setLitro(+e.target.value || 0)} /></div>
+          </div>
+          <div className="field-row">
+            <Badge color="#2FB35C" icon="bolt" size={40} />
+            <div className="field-body"><span>Consumo · km/litro</span><input type="number" value={cons} onChange={(e) => setCons(+e.target.value || 1)} /></div>
+          </div>
+          <div className="field-row">
+            <Badge color="#8B5CF6" icon="compass" size={40} />
+            <div className="field-body"><span>Km total estimado (ajuste se souber o real)</span><input type="number" value={km} onChange={(e) => setKm(+e.target.value || 0)} /></div>
+          </div>
+          <div className="total-row"><span>{km.toLocaleString("pt-BR")} km de roteiro</span><b>R$ {num(combustivel)}</b></div>
+        </GroupCard>
       </div>
     </>
   );
@@ -346,8 +606,9 @@ export default function App() {
   const [nav, setNav] = useState("roteiro");
   const tabs = [
     ["roteiro", "Roteiro", "map"],
-    ["conversor", "Conversor", "swap"],
-    ["links", "Links úteis", "link"],
+    ["riscos", "Riscos", "alert"],
+    ["reservas", "Reservas", "cart"],
+    ["info", "Info", "info"],
   ];
   return (
     <div className="stage">
@@ -358,8 +619,9 @@ export default function App() {
             <div className="screen" data-theme={theme}>
               <div className="app">
                 {nav === "roteiro" && <Roteiro />}
-                {nav === "conversor" && <Conversor />}
-                {nav === "links" && <Links />}
+                {nav === "riscos" && <Riscos />}
+                {nav === "reservas" && <Reservas />}
+                {nav === "info" && <Info />}
               </div>
               <div className="tabbar-wrap">
                 <nav className="tabbar">
@@ -405,6 +667,7 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
   --tabbar-bg:rgba(28,28,30,.86);--tabbar-border:rgba(255,255,255,.08);--tabbar-shadow:none;--tabbar-active-bg:rgba(76,141,255,.14);
   --home-ind:#fff;--home-ind-op:.85;
   --total-bg:rgba(76,141,255,.1);--card-shadow:none;--logo-bg:#1C1C1E;
+  --amenity-bg:#232326;--amenity-fg:#606066;--amenity-on-fg:#F5F5F7;
   position:relative;height:100%;background:var(--bg);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;color:var(--text);
   transition:background .25s ease,color .25s ease}
 
@@ -420,6 +683,7 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
   --tabbar-bg:rgba(255,255,255,.86);--tabbar-border:#E3E4E8;--tabbar-shadow:0 10px 28px rgba(20,20,30,.10);--tabbar-active-bg:rgba(47,111,224,.12);
   --home-ind:#1C1C1E;--home-ind-op:.8;
   --total-bg:rgba(47,111,224,.08);--card-shadow:0 1px 2px rgba(20,20,30,.04);--logo-bg:#EAF1FF;
+  --amenity-bg:#F0F1F3;--amenity-fg:#9A9AA0;--amenity-on-fg:#1C1C1E;
 }
 
 .app{flex:1;min-height:0;display:flex;flex-direction:column}
@@ -436,13 +700,18 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 .searchbar{margin:8px 18px 0;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--surface-border);border-radius:12px;padding:10px 12px;color:var(--text2)}
 .searchbar input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font-size:14px}
 
-.daynav{flex:none;display:flex;align-items:center;gap:8px;padding:14px 14px 6px}
+.daynav{flex:none;display:flex;align-items:flex-start;gap:8px;padding:14px 14px 6px}
 .daynav-mid{flex:1;text-align:center;min-width:0;animation:rise .22s ease}
 @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .daynav-mid h1{font-family:var(--sd);font-weight:800;font-size:25px;letter-spacing:-.02em;margin:0;line-height:1.1;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .daynav-mid h1 span{font-weight:700;color:var(--text2)}
 .daynav-mid p{margin:3px 0 0;font-size:12px;color:var(--text2)}
+.daynav-tags{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:7px}
+.risk-chip{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700}
+.risk-chip i{width:7px;height:7px;border-radius:50%;display:block}
+.anchor-tag{font-size:10.5px;font-weight:700;color:#fff;background:#8B5CF6;padding:2px 8px;border-radius:999px;flex:none}
+.flex-tag{font-size:10.5px;font-weight:700;color:var(--text2);background:var(--surface);border:1px solid var(--card-border);padding:2px 8px;border-radius:999px;flex:none}
 
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 18px 100px;animation:fade .2s ease}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -482,10 +751,26 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 .row-top h4{font-family:var(--sb);font-weight:700;font-size:15px;margin:0;letter-spacing:-.005em;flex:1;min-width:0}
 .row .dist{font-size:11px;color:var(--text3);flex:none}
 .row-body p{font-size:12.5px;line-height:1.42;color:var(--text2);margin:3px 0 6px}
-.row-tags{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);font-weight:500}
+.row-tags{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);font-weight:500;flex-wrap:wrap}
 .row-tags i{width:7px;height:7px;border-radius:50%;display:block}
 .row-tags .sep{color:var(--text3)}
 .row>svg{flex:none;color:var(--text3);margin-top:12px}
+
+.amenities{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 6px}
+.amenity{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:var(--amenity-fg);background:var(--amenity-bg);border-radius:999px;padding:3px 8px 3px 6px}
+.amenity.on{color:var(--amenity-on-fg)}
+
+.risk-row{padding:13px 14px;border-bottom:1px solid var(--divider)}
+.risk-row:last-child{border-bottom:0}
+.risk-row-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.risk-row-top h4{font-family:var(--sb);font-weight:700;font-size:14.5px;margin:0}
+.risk-trigger{font-size:12.5px;color:var(--text2);margin:3px 0 6px}
+.risk-line{font-size:12px;color:var(--text2);line-height:1.5;margin:2px 0}
+.risk-line b{color:var(--text)}
+.risk-op{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:var(--blue);text-decoration:none;margin-bottom:4px}
+.risk-block{border-bottom:1px solid var(--divider)}
+.risk-block:last-child{border-bottom:0}
+.risk-days{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;padding:12px 14px 0}
 
 .empty-row{padding:22px 4px;text-align:center}
 .empty-row p{font-size:13px;color:var(--text2);margin:0 0 10px}
