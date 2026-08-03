@@ -555,7 +555,8 @@
           "free": true,
           "needsBooking": true,
           "visitMinutes": 90,
-          "note": "Perguntar sobre cobertura para F-roads e cascalho."
+          "note": "Perguntar sobre cobertura para F-roads e cascalho.",
+          "imageUrl": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop"
         },
         {
           "id": "reykjavik-centro",
@@ -567,7 +568,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 180
+          "visitMinutes": 180,
+          "imageUrl": "https://images.unsplash.com/photo-1473093295203-cad5648ca558?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "reykjavik-laugardalur",
@@ -608,7 +610,8 @@
           "needsBooking": true,
           "visitMinutes": 360,
           "weatherSensitive": true,
-          "note": "Reserva antecipada. ~USD 400/adulto."
+          "note": "Reserva antecipada. ~USD 400/adulto.",
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "thingvellir-leirar",
@@ -649,7 +652,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90
+          "visitMinutes": 90,
+          "imageUrl": "https://images.unsplash.com/photo-1549982501-bdc5ca1c9c25?w=400&h=300&fit=crop"
         },
         {
           "id": "geysir",
@@ -661,7 +665,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60
+          "visitMinutes": 60,
+          "imageUrl": "https://images.unsplash.com/photo-1512732695100-98a1a088edcc?w=400&h=300&fit=crop"
         },
         {
           "id": "gullfoss",
@@ -674,7 +679,8 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "weatherSensitive": true
+          "weatherSensitive": true,
+          "imageUrl": "https://images.unsplash.com/photo-1539837999490-82f17278f8c7?w=400&h=300&fit=crop"
         },
         {
           "id": "kerid",
@@ -686,7 +692,8 @@
           ],
           "free": false,
           "needsBooking": false,
-          "visitMinutes": 40
+          "visitMinutes": 40,
+          "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=300&fit=crop"
         },
         {
           "id": "secret-lagoon",
@@ -698,7 +705,8 @@
           ],
           "free": false,
           "needsBooking": true,
-          "visitMinutes": 120
+          "visitMinutes": 120,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "landmannalaugar",
@@ -745,7 +753,8 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 210,
-          "weatherSensitive": true
+          "weatherSensitive": true,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "fonte-landmannalaugar",
@@ -757,7 +766,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60
+          "visitMinutes": 60,
+          "imageUrl": "https://images.unsplash.com/photo-1512732695100-98a1a088edcc?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "landmannalaugar",
@@ -797,7 +807,8 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 60,
-          "weatherSensitive": true
+          "weatherSensitive": true,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "skogafoss",
@@ -809,7 +820,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60
+          "visitMinutes": 60,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "seljavallalaug",
@@ -822,7 +834,8 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 120,
-          "note": "Caminhada de ~20 min ate a piscina."
+          "note": "Caminhada de ~20 min ate a piscina.",
+          "imageUrl": "https://images.unsplash.com/photo-1512732695100-98a1a088edcc?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "skogar",
@@ -866,7 +879,8 @@
           "needsBooking": false,
           "visitMinutes": 60,
           "weatherSensitive": true,
-          "note": "PERIGO: ondas sneaker. Nunca de costas para o mar."
+          "note": "PERIGO: ondas sneaker. Nunca de costas para o mar.",
+          "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop"
         },
         {
           "id": "eldfell",
@@ -879,7 +893,8 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 150,
-          "weatherSensitive": true
+          "weatherSensitive": true,
+          "imageUrl": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop"
         },
         {
           "id": "eldheimar",
@@ -891,7 +906,8 @@
           ],
           "free": false,
           "needsBooking": false,
-          "visitMinutes": 90
+          "visitMinutes": 90,
+          "imageUrl": "https://images.unsplash.com/photo-1564399579883-451a5d44ec6a?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "vestmannaeyjar",
@@ -934,7 +950,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90
+          "visitMinutes": 90,
+          "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=300&fit=crop"
         },
         {
           "id": "svartifoss",
@@ -946,7 +963,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 120
+          "visitMinutes": 120,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "skaftafell",
@@ -989,7 +1007,8 @@
           "needsBooking": true,
           "visitMinutes": 300,
           "weatherSensitive": true,
-          "note": "Guia certificado obrigatorio."
+          "note": "Guia certificado obrigatorio.",
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "jokulsarlon",
@@ -1001,7 +1020,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90
+          "visitMinutes": 90,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "diamond-beach",
@@ -1013,7 +1033,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 45
+          "visitMinutes": 45,
+          "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "hofn",
@@ -1054,7 +1075,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 45
+          "visitMinutes": 45,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "seydisfjordur-vila",
@@ -1066,7 +1088,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90
+          "visitMinutes": 90,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "vok-baths",
@@ -1078,7 +1101,8 @@
           ],
           "free": false,
           "needsBooking": true,
-          "visitMinutes": 150
+          "visitMinutes": 150,
+          "imageUrl": "https://images.unsplash.com/photo-1512732695100-98a1a088edcc?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "seydisfjordur",
@@ -1122,7 +1146,8 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
-          "weatherSensitive": true
+          "weatherSensitive": true,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "hverir",
@@ -1134,7 +1159,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60
+          "visitMinutes": 60,
+          "imageUrl": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop"
         },
         {
           "id": "krafla",
@@ -1146,7 +1172,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90
+          "visitMinutes": 90,
+          "imageUrl": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop"
         },
         {
           "id": "dimmuborgir",
@@ -1158,7 +1185,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90
+          "visitMinutes": 90,
+          "imageUrl": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=300&fit=crop"
         },
         {
           "id": "myvatn-baths",
@@ -1170,7 +1198,8 @@
           ],
           "free": false,
           "needsBooking": true,
-          "visitMinutes": 150
+          "visitMinutes": 150,
+          "imageUrl": "https://images.unsplash.com/photo-1512732695100-98a1a088edcc?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "myvatn-hlid",
@@ -1214,7 +1243,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60
+          "visitMinutes": 60,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         },
         {
           "id": "akureyri",
@@ -1226,7 +1256,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 180
+          "visitMinutes": 180,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "akureyri-hamrar",
@@ -1262,7 +1293,8 @@
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60
+          "visitMinutes": 60,
+          "imageUrl": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop"
         },
         {
           "id": "snaefellsjokull",
@@ -1275,7 +1307,8 @@
           "free": true,
           "needsBooking": false,
           "visitMinutes": 120,
-          "weatherSensitive": true
+          "weatherSensitive": true,
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "arnarstapi",
@@ -1317,7 +1350,8 @@
           "free": false,
           "needsBooking": true,
           "visitMinutes": 360,
-          "note": "So se o Dia 2 foi cancelado."
+          "note": "So se o Dia 2 foi cancelado.",
+          "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
         }
       ],
       "campsitePlanA": "reykjanesbaer",

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, createContext, useContext } from "react";
 import linkGroups from "../data/links.json";
+import { HighlightImage } from "./components/HighlightImage";
 import {
   dias,
   riscos,
@@ -291,6 +292,7 @@ function Roteiro() {
               {day.highlights.map((h) => (
                 <a key={h.id} className="row" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.name + ", Iceland")}`} target="_blank" rel="noreferrer">
                   <Badge color={KIND[h.kind].color} icon={KIND[h.kind].icon} />
+                  {h.imageUrl && <HighlightImage imageUrl={h.imageUrl} highlightId={h.id} />}
                   <div className="row-body">
                     <div className="row-top"><h4>{h.name}</h4><span className="dist">~{h.visitMinutes}min</span></div>
                     {h.note && <p>{h.note}</p>}
@@ -755,6 +757,9 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 .row-tags i{width:7px;height:7px;border-radius:50%;display:block}
 .row-tags .sep{color:var(--text3)}
 .row>svg{flex:none;color:var(--text3);margin-top:12px}
+
+.highlight-image-thumbnail{flex:none;width:48px;height:48px;border-radius:10px;object-fit:cover;margin-top:2px}
+.highlight-image-placeholder{flex:none;width:48px;height:48px;border-radius:10px;background:var(--surface);color:var(--text3);display:flex;align-items:center;justify-content:center;margin-top:2px}
 
 .amenities{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 6px}
 .amenity{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:var(--amenity-fg);background:var(--amenity-bg);border-radius:999px;padding:3px 8px 3px 6px}

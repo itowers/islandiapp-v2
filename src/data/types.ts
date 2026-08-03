@@ -112,6 +112,7 @@ export interface Highlight {
   visitMinutes: number;
   weatherSensitive?: boolean;
   note?: string;
+  imageUrl?: string;
 }
 
 export type MandatoryCheck = "road" | "safetravel" | "ferry" | "volcano";
