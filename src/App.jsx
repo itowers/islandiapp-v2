@@ -341,20 +341,274 @@ function Roteiro() {
   );
 }
 
-/* ── tela: riscos (visão geral) ────────────────────────────── */
-function Riscos() {
+/* ── tela: listagem (todos os destaques com priorização) ────── */
+function Listagem() {
+  const theme = useContext(ThemeCtx);
+  const KIND = theme === "light" ? KIND_LIGHT : KIND_DARK;
+  const RISKCOLOR = theme === "light" ? RISK_LIGHT : RISK_DARK;
+
+  const [riskFilter, setRiskFilter] = useState("all");
+  const [priorities, setPriorities] = useState({});
+
+  const allHighlights = useMemo(() => {
+    return dias.flatMap((d) =>
+      d.highlights.map((h) => ({ ...h, dayN: d.n, dayRisk: d.risk }))
+    );
+  }, []);
+
+  const filteredHighlights = useMemo(() => {
+    if (riskFilter === "all") return allHighlights;
+    return allHighlights.filter((h) => h.dayRisk === riskFilter);
+  }, [allHighlights, riskFilter]);
+
+  const handlePriority = (id, priority) => {
+    setPriorities((p) => ({
+      ...p,
+      [id]: p[id] === priority ? null : priority,
+    }));
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "must":
+        return "#FF6B4A";
+      case "nice":
+        return "#F5A524";
+      case "could":
+        return "#8B5CF6";
+      case "pass":
+        return "#606066";
+      default:
+        return "transparent";
+    }
+  };
+
+  const getPriorityLabel = (priority) => {
+    switch (priority) {
+      case "must":
+        return "Must have";
+      case "nice":
+        return "Nice to have";
+      case "could":
+        return "Could have";
+      case "pass":
+        return "Pass";
+      default:
+        return "";
+    }
+  };
+
   return (
     <>
-      <TopBar icon="alert" title="Riscos" />
+      <TopBar icon="star" title="Listagem" />
       <div className="scroll">
-        <p className="page-sub">Gatilhos, planos B e C de cada risco mapeado na viagem.</p>
-        <GroupCard title="Todos os riscos" count={riscos.length}>
-          {riscos.map((r) => (
-            <div key={r.id} className="risk-block">
-              <p className="risk-days">Dia{r.dayNumbers.length > 1 ? "s" : ""} {r.dayNumbers.join(", ")}</p>
-              <RiskRow risk={r} />
+        <p className="page-sub">Todos os destaques da viagem com priorização.</p>
+
+        <div className="segs" style={{ marginBottom: "12px" }}>
+          <button
+            className={riskFilter === "all" ? "seg on" : "seg"}
+            onClick={() => setRiskFilter("all")}
+          >
+            Todos
+          </button>
+          <button
+            className={riskFilter === "low" ? "seg on" : "seg"}
+            onClick={() => setRiskFilter("low")}
+          >
+            Baixo risco
+          </button>
+          <button
+            className={riskFilter === "medium" ? "seg on" : "seg"}
+            onClick={() => setRiskFilter("medium")}
+          >
+            Médio risco
+          </button>
+          <button
+            className={riskFilter === "high" ? "seg on" : "seg"}
+            onClick={() => setRiskFilter("high")}
+          >
+            Alto risco
+          </button>
+        </div>
+
+        <GroupCard title="Destaques" count={filteredHighlights.length}>
+          {filteredHighlights.length === 0 ? (
+            <div className="empty-row">
+              <p>Nenhum destaque neste filtro.</p>
             </div>
+          ) : (
+            filteredHighlights.map((h) => (
+              <div key={h.id} className="highlight-card">
+                <a
+                  className="row"
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    h.name + ", Iceland"
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ borderBottom: "none", paddingBottom: "8px" }}
+                >
+                  {h.imageUrl && (
+                    <HighlightImage imageUrl={h.imageUrl} highlightId={h.id} />
+                  )}
+                  <div className="row-body">
+                    <div className="row-top">
+                      <h4>{h.name}</h4>
+                      <span className="dist">Dia {h.dayN}</span>
+                    </div>
+                    {h.note && <p>{h.note}</p>}
+                    <div className="row-tags">
+                      <i style={{ background: KIND[h.kind].color }} />
+                      {KIND[h.kind].label}
+                      <span className="sep">·</span>
+                      {h.free ? "grátis" : "pago"}
+                      {h.needsBooking && (
+                        <>
+                          <span className="sep">·</span>reserva
+                        </>
+                      )}
+                      {h.weatherSensitive && (
+                        <>
+                          <span className="sep">·</span>sensível ao tempo
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <Icon name="chevron-right" size={16} />
+                </a>
+
+                <div className="priority-buttons">
+                  {["must", "nice", "could", "pass"].map((p) => (
+                    <button
+                      key={p}
+                      className={`priority-btn ${priorities[h.id] === p ? "active" : ""}`}
+                      onClick={() => handlePriority(h.id, p)}
+                      style={{
+                        background:
+                          priorities[h.id] === p
+                            ? getPriorityColor(p)
+                            : "var(--surface)",
+                        color:
+                          priorities[h.id] === p ? "#fff" : "var(--text2)",
+                      }}
+                    >
+                      {getPriorityLabel(p)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+        </GroupCard>
+      </div>
+    </>
+  );
+}
+
+/* ── tela: conversor (moeda e combustível) ──────────────────── */
+function Conversor() {
+  const theme = useContext(ThemeCtx);
+  const colors = theme === "light" ? LINK_COLOR.light : LINK_COLOR.dark;
+
+  const defaultKm = Math.round(
+    ((dias.reduce((s, d) => s + d.drivingMinutes, 0) / 60) * 70) / 10
+  ) * 10;
+  const [rate, setRate] = useState(0.043);
+  const [isk, setIsk] = useState(5000);
+  const [litro, setLitro] = useState(320);
+  const [cons, setCons] = useState(9);
+  const [km, setKm] = useState(defaultKm);
+  const num = (v) =>
+    v.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  const combustivel = (km / cons) * litro;
+
+  return (
+    <>
+      <TopBar icon="swap" title="Conversor" />
+      <div className="scroll">
+        <p className="page-sub">Conversão de moedas e cálculo de combustível.</p>
+
+        <div className="hero">
+          <p className="hero-sub">{isk.toLocaleString("pt-BR")} ISK equivalem a</p>
+          <h1 className="hero-num">R$ {num(isk * rate)}</h1>
+        </div>
+        <div className="pills">
+          {[500, 1000, 2500, 5000, 12000].map((v) => (
+            <button
+              key={v}
+              className={isk === v ? "pill on" : "pill"}
+              onClick={() => setIsk(v)}
+            >
+              {v.toLocaleString("pt-BR")}
+            </button>
           ))}
+        </div>
+        <GroupCard title="Ajustar">
+          <div className="field-row">
+            <Badge color="#58A6FF" icon="swap" size={40} />
+            <div className="field-body">
+              <span>Valor em ISK</span>
+              <input
+                type="number"
+                value={isk}
+                onChange={(e) => setIsk(+e.target.value || 0)}
+              />
+            </div>
+          </div>
+          <div className="field-row">
+            <Badge color="#6E7681" icon="coin" size={40} />
+            <div className="field-body">
+              <span>Cotação · 1 ISK em R$</span>
+              <input
+                type="number"
+                step="0.001"
+                value={rate}
+                onChange={(e) => setRate(+e.target.value || 0)}
+              />
+            </div>
+          </div>
+        </GroupCard>
+        <GroupCard title="Combustível da viagem">
+          <div className="field-row">
+            <Badge color="#F5A524" icon="fuel" size={40} />
+            <div className="field-body">
+              <span>Diesel · ISK/litro</span>
+              <input
+                type="number"
+                value={litro}
+                onChange={(e) => setLitro(+e.target.value || 0)}
+              />
+            </div>
+          </div>
+          <div className="field-row">
+            <Badge color="#2FB35C" icon="bolt" size={40} />
+            <div className="field-body">
+              <span>Consumo · km/litro</span>
+              <input
+                type="number"
+                value={cons}
+                onChange={(e) => setCons(+e.target.value || 1)}
+              />
+            </div>
+          </div>
+          <div className="field-row">
+            <Badge color="#8B5CF6" icon="compass" size={40} />
+            <div className="field-body">
+              <span>Km total estimado (ajuste se souber o real)</span>
+              <input
+                type="number"
+                value={km}
+                onChange={(e) => setKm(+e.target.value || 0)}
+              />
+            </div>
+          </div>
+          <div className="total-row">
+            <span>{km.toLocaleString("pt-BR")} km de roteiro</span>
+            <b>R$ {num(combustivel)}</b>
+          </div>
         </GroupCard>
       </div>
     </>
@@ -420,23 +674,14 @@ function Reservas() {
   );
 }
 
-/* ── tela: info (voos, emergência, equipamentos, links, conversor) ── */
-function Info() {
+/* ── tela: infos (voos, emergência, equipamentos, links) ──────── */
+function Infos() {
   const theme = useContext(ThemeCtx);
   const colors = theme === "light" ? LINK_COLOR.light : LINK_COLOR.dark;
 
-  const defaultKm = Math.round((dias.reduce((s, d) => s + d.drivingMinutes, 0) / 60) * 70 / 10) * 10;
-  const [rate, setRate] = useState(0.043);
-  const [isk, setIsk] = useState(5000);
-  const [litro, setLitro] = useState(320);
-  const [cons, setCons] = useState(9);
-  const [km, setKm] = useState(defaultKm);
-  const num = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const combustivel = (km / cons) * litro;
-
   return (
     <>
-      <TopBar icon="info" title="Info" />
+      <TopBar icon="info" title="Infos" />
       <div className="scroll">
         <p className="page-sub">{meta.viagem.inicio} a {meta.viagem.fim} · {meta.viagem.dias} dias · {meta.viagem.transporte}</p>
 
@@ -561,41 +806,6 @@ function Info() {
             </div>
           ))}
         </GroupCard>
-
-        <div className="hero">
-          <p className="hero-sub">{isk.toLocaleString("pt-BR")} ISK equivalem a</p>
-          <h1 className="hero-num">R$ {num(isk * rate)}</h1>
-        </div>
-        <div className="pills">
-          {[500, 1000, 2500, 5000, 12000].map((v) => (
-            <button key={v} className={isk === v ? "pill on" : "pill"} onClick={() => setIsk(v)}>{v.toLocaleString("pt-BR")}</button>
-          ))}
-        </div>
-        <GroupCard title="Ajustar">
-          <div className="field-row">
-            <Badge color="#58A6FF" icon="swap" size={40} />
-            <div className="field-body"><span>Valor em ISK</span><input type="number" value={isk} onChange={(e) => setIsk(+e.target.value || 0)} /></div>
-          </div>
-          <div className="field-row">
-            <Badge color="#6E7681" icon="coin" size={40} />
-            <div className="field-body"><span>Cotação · 1 ISK em R$</span><input type="number" step="0.001" value={rate} onChange={(e) => setRate(+e.target.value || 0)} /></div>
-          </div>
-        </GroupCard>
-        <GroupCard title="Combustível da viagem">
-          <div className="field-row">
-            <Badge color="#F5A524" icon="fuel" size={40} />
-            <div className="field-body"><span>Diesel · ISK/litro</span><input type="number" value={litro} onChange={(e) => setLitro(+e.target.value || 0)} /></div>
-          </div>
-          <div className="field-row">
-            <Badge color="#2FB35C" icon="bolt" size={40} />
-            <div className="field-body"><span>Consumo · km/litro</span><input type="number" value={cons} onChange={(e) => setCons(+e.target.value || 1)} /></div>
-          </div>
-          <div className="field-row">
-            <Badge color="#8B5CF6" icon="compass" size={40} />
-            <div className="field-body"><span>Km total estimado (ajuste se souber o real)</span><input type="number" value={km} onChange={(e) => setKm(+e.target.value || 0)} /></div>
-          </div>
-          <div className="total-row"><span>{km.toLocaleString("pt-BR")} km de roteiro</span><b>R$ {num(combustivel)}</b></div>
-        </GroupCard>
       </div>
     </>
   );
@@ -607,9 +817,9 @@ export default function App() {
   const [nav, setNav] = useState("roteiro");
   const tabs = [
     ["roteiro", "Roteiro", "map"],
-    ["riscos", "Riscos", "alert"],
-    ["reservas", "Reservas", "cart"],
-    ["info", "Info", "info"],
+    ["listagem", "Listagem", "star"],
+    ["conversor", "Conversor", "swap"],
+    ["infos", "Infos", "info"],
   ];
   return (
     <div className="stage">
@@ -620,9 +830,9 @@ export default function App() {
             <div className="screen" data-theme={theme}>
               <div className="app">
                 {nav === "roteiro" && <Roteiro />}
-                {nav === "riscos" && <Riscos />}
-                {nav === "reservas" && <Reservas />}
-                {nav === "info" && <Info />}
+                {nav === "listagem" && <Listagem />}
+                {nav === "conversor" && <Conversor />}
+                {nav === "infos" && <Infos />}
               </div>
               <div className="tabbar-wrap">
                 <nav className="tabbar">
@@ -805,6 +1015,13 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 .tabbar button span{font-size:10.5px;font-weight:600}
 .tabbar button.on{color:var(--blue);background:var(--tabbar-active-bg)}
 .home-indicator{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:var(--home-ind);opacity:var(--home-ind-op)}
+
+.highlight-card{padding:8px 14px;border-bottom:1px solid var(--divider)}
+.highlight-card:last-child{border-bottom:0}
+.priority-buttons{display:flex;gap:6px;padding:8px 14px;flex-wrap:wrap}
+.priority-btn{flex:1;min-width:80px;border:1px solid var(--card-border);background:var(--surface);color:var(--text2);border-radius:8px;padding:8px 10px;
+  font-size:12px;font-weight:600;cursor:pointer;transition:.12s;white-space:nowrap}
+.priority-btn.active{border:1px solid rgba(255,255,255,.1)}
 
 @media (prefers-reduced-motion:reduce){.scroll,.daynav-mid{animation:none}}
 @media (max-width:430px){.stage{padding:0}.phone{max-width:none;height:100vh;border-radius:0;padding:0}.screen{border-radius:0}}
