@@ -1,4 +1,4 @@
-import React, { useState, useMemo, createContext, useContext } from "react";
+import React, { useState, useMemo, useEffect, createContext, useContext } from "react";
 import linkGroups from "../data/links.json";
 import mapaRegioes from "../data/mapa-regioes.json";
 import { HighlightImage } from "./components/HighlightImage";
@@ -1040,6 +1040,19 @@ export default function App() {
     ["conversor", "Conversor", "swap"],
     ["infos", "Infos", "info"],
   ];
+
+  /* status bar / splash do PWA acompanham o tema — no iOS em standalone o
+     topo da tela é pintado com essa cor, então precisa bater com o app. */
+  useEffect(() => {
+    const bg = theme === "light" ? "#F3F3F5" : "#000000";
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", bg);
+    const mq = window.matchMedia("(max-width:480px), (display-mode: standalone)");
+    const apply = () => { document.body.style.background = mq.matches ? bg : ""; };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [theme]);
+
   return (
     <div className="stage">
       <style>{CSS}</style>
@@ -1063,7 +1076,6 @@ export default function App() {
                   ))}
                 </nav>
               </div>
-              <div className="home-indicator" />
             </div>
           </div>
         </ThemeSetterCtx.Provider>
@@ -1077,13 +1089,16 @@ const CSS = `
 
 *{box-sizing:border-box}
 html,body,#root{height:100%;margin:0}
-body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
+body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif;overscroll-behavior:none;-webkit-text-size-adjust:100%}
 
 .stage{--sd:'Manrope',system-ui,sans-serif;--sb:'Inter',system-ui,sans-serif;
-  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px 12px;-webkit-font-smoothing:antialiased}
+  --safe-top:0px;--safe-bottom:0px;
+  min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:22px 12px;-webkit-font-smoothing:antialiased}
 .stage button,.stage input{font-family:inherit}
+.stage button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 
-.phone{width:100%;max-width:398px;height:min(864px,calc(100vh - 44px));background:#0B0B0C;border-radius:52px;padding:12px;
+.phone{width:100%;max-width:398px;height:min(864px,calc(100vh - 44px));height:min(864px,calc(100dvh - 44px));
+  background:#0B0B0C;border-radius:52px;padding:12px;
   box-shadow:0 30px 70px rgba(0,0,0,.30),0 0 0 1.5px #1B1B1D inset}
 
 .screen{
@@ -1096,11 +1111,11 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
   --cta-bg:#2C2C30;--cta-fg:#fff;--cta-border:transparent;
   --row-hover:rgba(255,255,255,.03);
   --tabbar-bg:rgba(28,28,30,.86);--tabbar-border:rgba(255,255,255,.08);--tabbar-shadow:none;--tabbar-active-bg:rgba(76,141,255,.14);
-  --home-ind:#fff;--home-ind-op:.85;
   --total-bg:rgba(76,141,255,.1);--card-shadow:none;--logo-bg:#1C1C1E;
   --amenity-bg:#232326;--amenity-fg:#606066;--amenity-on-fg:#F5F5F7;
   --map-void:#3A3A3F;--map-label-bg:#0E0E10;
   position:relative;height:100%;background:var(--bg);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;color:var(--text);
+  container-type:inline-size;
   transition:background .25s ease,color .25s ease}
 
 .screen[data-theme="light"]{
@@ -1113,7 +1128,6 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
   --cta-bg:#FFFFFF;--cta-fg:#1C1C1E;--cta-border:#E3E4E8;
   --row-hover:#F7F8FA;
   --tabbar-bg:rgba(255,255,255,.86);--tabbar-border:#E3E4E8;--tabbar-shadow:0 10px 28px rgba(20,20,30,.10);--tabbar-active-bg:rgba(47,111,224,.12);
-  --home-ind:#1C1C1E;--home-ind-op:.8;
   --total-bg:rgba(47,111,224,.08);--card-shadow:0 1px 2px rgba(20,20,30,.04);--logo-bg:#EAF1FF;
   --amenity-bg:#F0F1F3;--amenity-fg:#9A9AA0;--amenity-on-fg:#1C1C1E;
   --map-void:#C9CAC5;--map-label-bg:#FFFFFF;
@@ -1121,7 +1135,7 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 
 .app{flex:1;min-height:0;display:flex;flex-direction:column}
 
-.topline{flex:none;display:flex;align-items:center;justify-content:space-between;padding:22px 18px 2px}
+.topline{flex:none;display:flex;align-items:center;justify-content:space-between;padding:calc(22px + var(--safe-top)) 18px 2px}
 .toprow-actions{display:flex;gap:8px}
 .wordmark{display:flex;align-items:center;gap:9px}
 .logo{width:30px;height:30px;border-radius:9px;background:var(--logo-bg);display:flex;align-items:center;justify-content:center;color:var(--blue)}
@@ -1146,7 +1160,8 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 .anchor-tag{font-size:10.5px;font-weight:700;color:#fff;background:#8B5CF6;padding:2px 8px;border-radius:999px;flex:none}
 .flex-tag{font-size:10.5px;font-weight:700;color:var(--text2);background:var(--surface);border:1px solid var(--card-border);padding:2px 8px;border-radius:999px;flex:none}
 
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 18px 100px;animation:fade .2s ease}
+.scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  padding:8px 18px calc(96px + var(--safe-bottom));animation:fade .2s ease}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .page-sub{font-size:12.5px;color:var(--text2);margin:2px 0 16px;line-height:1.5}
 
@@ -1229,14 +1244,16 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 .ref-vals b{font-size:12.5px;font-weight:600;color:var(--text)}
 .ref-vals em{font-style:normal;font-size:11px;color:var(--blue)}
 
-.tabbar-wrap{position:absolute;left:0;right:0;bottom:0;padding:0 14px 8px;pointer-events:none}
-.tabbar{pointer-events:auto;display:flex;gap:2px;background:var(--tabbar-bg);backdrop-filter:blur(20px);border:1px solid var(--tabbar-border);
+/* flutuante, alinhada à mesma sarjeta de 18px do conteúdo e acima da
+   home bar do iPhone (var(--safe-bottom)) */
+.tabbar-wrap{position:absolute;left:0;right:0;bottom:0;padding:0 18px calc(10px + var(--safe-bottom));pointer-events:none}
+.tabbar{position:relative;pointer-events:auto;display:flex;gap:2px;background:var(--tabbar-bg);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);border:1px solid var(--tabbar-border);
   border-radius:22px;padding:6px;box-shadow:var(--tabbar-shadow)}
-.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;color:var(--text3);
-  padding:9px 4px 8px;border-radius:16px;cursor:pointer;transition:.14s}
-.tabbar button span{font-size:10.5px;font-weight:600}
+.tabbar button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;color:var(--text3);
+  padding:9px 2px 8px;border-radius:16px;cursor:pointer;transition:.14s}
+.tabbar button span{font-size:10.5px;font-weight:600;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tabbar button.on{color:var(--blue);background:var(--tabbar-active-bg)}
-.home-indicator{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:var(--home-ind);opacity:var(--home-ind-op)}
 
 /* ── mapa ────────────────────────────────────────────────── */
 .map-wrap{margin:0 -18px 16px;background:var(--bg)}
@@ -1285,5 +1302,28 @@ svg.mapa .lbl-void{font-family:var(--sb);font-style:italic;font-weight:500;font-
 .priority-btn.active{border:1px solid rgba(255,255,255,.1)}
 
 @media (prefers-reduced-motion:reduce){.scroll,.daynav-mid{animation:none}}
-@media (max-width:430px){.stage{padding:0}.phone{max-width:none;height:100vh;border-radius:0;padding:0}.screen{border-radius:0}}
+
+/* Tela cheia no celular e no PWA instalado. O breakpoint vai até 480px para
+   pegar também os iPhone Pro Max (440pt de largura).
+   position:fixed em vez de 100vh: em standalone no iOS o 100vh é maior que a
+   área visível, o que empurrava a tab bar para fora da tela e fazia a página
+   rolar inteira. */
+@media (max-width:480px),(display-mode:standalone){
+  html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+  .stage{position:fixed;inset:0;display:block;padding:0;min-height:0;
+    --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+  .phone{max-width:none;width:100%;height:100%;border-radius:0;padding:0;box-shadow:none}
+  .screen{border-radius:0}
+}
+/* telas estreitas (moldura de desktop, iPhone mini/SE): aperta a tab bar
+   para os 5 rótulos caberem sem cortar */
+@container (max-width:396px){
+  .tabbar-wrap{padding-left:12px;padding-right:12px}
+  .tabbar button span{font-size:10px;letter-spacing:-.01em}
+}
+@container (max-width:350px){
+  .tabbar{padding:5px}
+  .tabbar button{padding:8px 1px 7px}
+  .tabbar button span{font-size:9.5px}
+}
 `;
