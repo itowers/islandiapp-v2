@@ -8,6 +8,7 @@ Roteiro de camper van pela Islândia — 07 a 19/20 de setembro de 2026.
 data/
   roteiro-2026.json   ← voos, campings, riscos, os 13 dias, reservas, checklists...
   links.json          ← os links úteis, agrupados por categoria
+  mapa-regioes.json   ← a geometria do mapa: uma região por dia de viagem
 ```
 
 Pra atualizar o roteiro, edite `data/roteiro-2026.json` — não precisa mexer
@@ -49,18 +50,35 @@ campings e riscos.
 
 `icone` aceita: `compass`, `tent`, `coin`, `alert`.
 
+### Estrutura de `mapa-regioes.json`
+
+O país inteiro dividido em 13 regiões — cada uma é o território mais
+próximo das paradas daquele dia.
+
+- `width` / `height` — o `viewBox` do SVG.
+- `regioes` — por número do dia, o `nome` da região e a `cor` usada no
+  modo "por dia".
+- `paths` — o desenho de cada região. A chave `"0"` é o que fica fora do
+  roteiro; chaves de três dígitos (`121`, `131`) são trechos de
+  passagem, desenhados hachurados.
+- `ancoras` — onde fica o rótulo de cada região.
+- `costa` — o contorno do país.
+- `rota` — um ponto por dia, na ordem da viagem.
+
+O conteúdo do dia (trecho, direção, camping, destaques, riscos) continua
+vindo de `roteiro-2026.json`; este arquivo só carrega a geografia.
+
 ## Abas do app
 
 - **Roteiro** — navegação dia a dia: destaques, plano de camping (A/B/C)
   e os riscos daquele dia.
-- **Riscos** — visão geral de todos os riscos mapeados na viagem, com
-  gatilho, plano B e plano C.
-- **Reservas** — reservas antecipadas por ordem de prioridade e o
-  checklist (esta semana / próximas semanas / mais perto da viagem /
-  já resolvido).
-- **Info** — voos, emergência, checagem diária obrigatória, links
-  úteis, banhos termais, equipamentos, notas e o conversor de moeda /
-  combustível.
+- **Mapa** — o país dividido por dia de viagem, colorido por dia ou por
+  risco. Tocar numa região abre a ficha daquele dia.
+- **Listagem** — todos os destaques da viagem, filtráveis por risco do
+  dia e com priorização (must / nice / could / pass).
+- **Conversor** — ISK para real e o custo estimado de combustível.
+- **Infos** — voos, emergência, checagem diária obrigatória, links
+  úteis, banhos termais, equipamentos e notas.
 
 ## Rodar localmente
 

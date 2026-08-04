@@ -1,5 +1,6 @@
 import React, { useState, useMemo, createContext, useContext } from "react";
 import linkGroups from "../data/links.json";
+import mapaRegioes from "../data/mapa-regioes.json";
 import { HighlightImage } from "./components/HighlightImage";
 import {
   dias,
@@ -29,7 +30,7 @@ import {
    /data/links.json — edite lá, não aqui.
    ────────────────────────────────────────────────────────────── */
 
-const ThemeCtx = createContext("dark");
+const ThemeCtx = createContext("light");
 const ThemeSetterCtx = createContext({ setTheme: () => {} });
 
 const KIND_DARK = {
@@ -336,6 +337,223 @@ function Roteiro() {
             </GroupCard>
           )
         )}
+      </div>
+    </>
+  );
+}
+
+/* ── tela: mapa (o país dividido por dia de viagem) ─────────── */
+const RISK_SHORT = { low: "Baixo", medium: "Médio", high: "Alto" };
+const MAP_TRANSIT_KEYS = Object.keys(mapaRegioes.paths).filter((k) => k.length === 3);
+
+function Mapa() {
+  const theme = useContext(ThemeCtx);
+  const RISKCOLOR = theme === "light" ? RISK_LIGHT : RISK_DARK;
+  const KIND = theme === "light" ? KIND_LIGHT : KIND_DARK;
+
+  const [mode, setMode] = useState("dia");
+  const [sel, setSel] = useState(1);
+
+  const diaByN = useMemo(() => Object.fromEntries(dias.map((d) => [d.n, d])), []);
+  const day = diaByN[sel];
+  const regiao = mapaRegioes.regioes[String(sel)];
+
+  /* cor de uma região: por dia usa a paleta do mapa, por risco usa a do roteiro */
+  const fillOf = (n) =>
+    mode === "dia" ? mapaRegioes.regioes[String(n)].cor : RISKCOLOR[diaByN[n].risk];
+
+  /* regiões maiores primeiro: "0" e dias, depois os trechos de passagem (121/131) */
+  const ordered = useMemo(
+    () => Object.keys(mapaRegioes.paths).sort((a, b) => a.length - b.length),
+    []
+  );
+
+  return (
+    <>
+      <TopBar icon="compass" title="Mapa" />
+      <div className="scroll">
+        <p className="page-sub">
+          Cada região é o território mais próximo das paradas daquele dia — o mapa cobre o país
+          inteiro, não só a estrada.
+        </p>
+
+        <div className="segs">
+          <button className={mode === "dia" ? "seg on" : "seg"} onClick={() => setMode("dia")}>Por dia</button>
+          <button className={mode === "risco" ? "seg on" : "seg"} onClick={() => setMode("risco")}>Por risco</button>
+        </div>
+
+        <div className="map-wrap">
+          <svg
+            className="mapa"
+            viewBox={`0 0 ${mapaRegioes.width} ${mapaRegioes.height}`}
+            role="img"
+            aria-label="Mapa da Islândia dividido em regiões por dia de viagem"
+          >
+            <defs>
+              {MAP_TRANSIT_KEYS.map((k) => {
+                const d = parseInt(k.slice(0, 2), 10);
+                return (
+                  <pattern key={k} id={`hachura-${d}-${mode}`} width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <rect width="7" height="7" fill={fillOf(d)} fillOpacity=".18" />
+                    <rect width="2.6" height="7" fill={fillOf(d)} fillOpacity=".85" />
+                  </pattern>
+                );
+              })}
+            </defs>
+
+            {ordered.map((k) => {
+              if (k === "0") {
+                return <path key={k} className="region void" d={mapaRegioes.paths[k]} fill="var(--map-void)" />;
+              }
+              const transit = k.length === 3;
+              const d = transit ? parseInt(k.slice(0, 2), 10) : parseInt(k, 10);
+              return (
+                <path
+                  key={k}
+                  className={d === sel ? "region on" : "region"}
+                  d={mapaRegioes.paths[k]}
+                  fill={transit ? `url(#hachura-${d}-${mode})` : fillOf(d)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Dia ${d} — ${mapaRegioes.regioes[String(d)].nome}`}
+                  aria-pressed={d === sel}
+                  onClick={() => setSel(d)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSel(d);
+                    }
+                  }}
+                />
+              );
+            })}
+
+            <path className="coast" d={mapaRegioes.costa} />
+
+            {Object.keys(mapaRegioes.regioes).map((key) => {
+              const d = parseInt(key, 10);
+              const a = mapaRegioes.ancoras[key];
+              if (!a) return null;
+              let [x, y] = a;
+              const on = d === sel;
+              const cor = fillOf(d);
+              /* Vestmannaeyjar é uma ilha minúscula: anel no lugar e rótulo puxado por uma linha */
+              const island = d === 6;
+              if (island) {
+                x -= 46;
+                y -= 18;
+              }
+              return (
+                <g key={key} className={on ? "lbl on" : "lbl"}>
+                  {island && (
+                    <>
+                      <circle cx={a[0]} cy={a[1]} r="9" fill="none" stroke={cor} strokeWidth="2.4" />
+                      <line className="leader" x1={a[0] - 7} y1={a[1] - 5} x2={a[0] - 34} y2={a[1] - 16} />
+                    </>
+                  )}
+                  <circle cx={x} cy={y} r="20" stroke={cor} strokeWidth="2.4" fill={on ? cor : "var(--map-label-bg)"} />
+                  <text x={x} y={y + 7.5} fill={on ? "#fff" : "var(--text)"}>{d}</text>
+                </g>
+              );
+            })}
+
+            {MAP_TRANSIT_KEYS.map((k) => {
+              const a = mapaRegioes.ancoras[k];
+              if (!a) return null;
+              const d = parseInt(k.slice(0, 2), 10);
+              return (
+                <g key={k} className="lbl">
+                  <rect x={a[0] - 165} y={a[1] - 16} width="330" height="30" rx="15" fill="var(--map-label-bg)" fillOpacity=".92" />
+                  <text className="lbl-sub" x={a[0]} y={a[1] + 3}>passagem · dia {d}</text>
+                </g>
+              );
+            })}
+
+            {mapaRegioes.ancoras["0"] && (
+              <text className="lbl-void" x={mapaRegioes.ancoras["0"][0]} y={mapaRegioes.ancoras["0"][1]}>
+                fora do roteiro
+              </text>
+            )}
+          </svg>
+        </div>
+
+        <GroupCard title={`Dia ${day.n} · ${regiao.nome}`}>
+          <div className="map-card-top">
+            <p>{day.title}</p>
+            <div className="map-tags">
+              <span className="risk-chip" style={{ color: RISKCOLOR[day.risk] }}>
+                <i style={{ background: RISKCOLOR[day.risk] }} />{RISK_LABEL[day.risk]}
+              </span>
+              {day.isAnchor && <span className="anchor-tag">dia âncora</span>}
+            </div>
+          </div>
+          <div className="map-cells">
+            <div className="map-cell">
+              <span>Dirigindo</span>
+              <b>{drivingLabel(day.drivingMinutes)}</b>
+            </div>
+            <div className="map-cell">
+              <span>Risco</span>
+              <b style={{ color: RISKCOLOR[day.risk] }}>{RISK_SHORT[day.risk]}</b>
+            </div>
+            <div className="map-cell">
+              <span>Noite</span>
+              <b>{day.campsiteA?.name ?? "—"}</b>
+            </div>
+          </div>
+          {day.highlights.map((h) => (
+            <a
+              key={h.id}
+              className="row"
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.name + ", Iceland")}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <div className="row-body">
+                <div className="row-top"><h4>{h.name}</h4><span className="dist">~{h.visitMinutes}min</span></div>
+                <div className="row-tags">
+                  <i style={{ background: KIND[h.kind].color }} />{KIND[h.kind].label}
+                  <span className="sep">·</span>{h.free ? "grátis" : "pago"}
+                </div>
+              </div>
+              <Icon name="chevron-right" size={16} />
+            </a>
+          ))}
+          {day.risks.length > 0 && (
+            <div className="map-warn">
+              <Icon name="alert" size={15} />
+              <p>{day.risks.map((r) => r.label).join(" · ")}</p>
+            </div>
+          )}
+        </GroupCard>
+
+        <GroupCard title="As 13 regiões" count={dias.length}>
+          <div className="map-legend">
+            {Object.keys(mapaRegioes.regioes).map((key, i, arr) => {
+              const d = parseInt(key, 10);
+              /* número ímpar de regiões: a última ocupa a linha inteira */
+              const wide = i === arr.length - 1 && arr.length % 2 === 1;
+              return (
+                <button
+                  key={key}
+                  className={[d === sel ? "map-chip on" : "map-chip", wide ? "wide" : ""].join(" ").trim()}
+                  aria-pressed={d === sel}
+                  onClick={() => setSel(d)}
+                >
+                  <i style={{ background: fillOf(d) }} />
+                  <span className="n">{String(d).padStart(2, "0")}</span>
+                  <span className="nm">{mapaRegioes.regioes[key].nome}</span>
+                </button>
+              );
+            })}
+          </div>
+        </GroupCard>
+
+        <p className="map-foot">
+          Áreas hachuradas são trecho de passagem: você atravessa dirigindo, sem parada prevista.
+          O cinza é o que fica fora do roteiro — Vestfirðir e o interior das Highlands além de
+          Landmannalaugar.
+        </p>
       </div>
     </>
   );
@@ -813,10 +1031,11 @@ function Infos() {
 
 /* ── app raiz ──────────────────────────────────────────────── */
 export default function App() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const [nav, setNav] = useState("roteiro");
   const tabs = [
     ["roteiro", "Roteiro", "map"],
+    ["mapa", "Mapa", "compass"],
     ["listagem", "Listagem", "star"],
     ["conversor", "Conversor", "swap"],
     ["infos", "Infos", "info"],
@@ -830,6 +1049,7 @@ export default function App() {
             <div className="screen" data-theme={theme}>
               <div className="app">
                 {nav === "roteiro" && <Roteiro />}
+                {nav === "mapa" && <Mapa />}
                 {nav === "listagem" && <Listagem />}
                 {nav === "conversor" && <Conversor />}
                 {nav === "infos" && <Infos />}
@@ -879,6 +1099,7 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
   --home-ind:#fff;--home-ind-op:.85;
   --total-bg:rgba(76,141,255,.1);--card-shadow:none;--logo-bg:#1C1C1E;
   --amenity-bg:#232326;--amenity-fg:#606066;--amenity-on-fg:#F5F5F7;
+  --map-void:#3A3A3F;--map-label-bg:#0E0E10;
   position:relative;height:100%;background:var(--bg);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;color:var(--text);
   transition:background .25s ease,color .25s ease}
 
@@ -895,6 +1116,7 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
   --home-ind:#1C1C1E;--home-ind-op:.8;
   --total-bg:rgba(47,111,224,.08);--card-shadow:0 1px 2px rgba(20,20,30,.04);--logo-bg:#EAF1FF;
   --amenity-bg:#F0F1F3;--amenity-fg:#9A9AA0;--amenity-on-fg:#1C1C1E;
+  --map-void:#C9CAC5;--map-label-bg:#FFFFFF;
 }
 
 .app{flex:1;min-height:0;display:flex;flex-direction:column}
@@ -1015,6 +1237,45 @@ body{background:#E7E7E9;font-family:'Inter',system-ui,sans-serif}
 .tabbar button span{font-size:10.5px;font-weight:600}
 .tabbar button.on{color:var(--blue);background:var(--tabbar-active-bg)}
 .home-indicator{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:var(--home-ind);opacity:var(--home-ind-op)}
+
+/* ── mapa ────────────────────────────────────────────────── */
+.map-wrap{margin:0 -18px 16px;background:var(--bg)}
+svg.mapa{width:100%;height:auto;display:block;touch-action:manipulation}
+svg.mapa .region{stroke:var(--bg);stroke-width:1.6;stroke-linejoin:round;cursor:pointer;transition:opacity .18s ease}
+svg.mapa .region.void{pointer-events:none}
+svg.mapa .region.on{stroke:var(--text);stroke-width:3.4}
+svg.mapa .region:focus{outline:none}
+svg.mapa .region:focus-visible{stroke:var(--blue);stroke-width:3.4}
+svg.mapa .coast{fill:none;stroke:var(--text);stroke-width:1.1;opacity:.45;pointer-events:none}
+svg.mapa .leader{stroke:var(--text);stroke-width:1.4;opacity:.5}
+svg.mapa .lbl{pointer-events:none}
+svg.mapa .lbl text{font-family:var(--sd);font-weight:800;font-size:22px;text-anchor:middle;font-variant-numeric:tabular-nums}
+svg.mapa .lbl-sub{font-family:var(--sb);font-weight:700;font-size:16px;letter-spacing:.06em;
+  text-transform:uppercase;fill:var(--text2);text-anchor:middle}
+svg.mapa .lbl-void{font-family:var(--sb);font-style:italic;font-weight:500;font-size:22px;fill:var(--text3);text-anchor:middle}
+
+.map-card-top{padding:13px 14px 11px}
+.map-card-top p{font-size:13px;color:var(--text2);line-height:1.45;margin:0}
+.map-tags{display:flex;align-items:center;gap:8px;margin-top:8px}
+.map-cells{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--divider);
+  border-top:1px solid var(--divider);border-bottom:1px solid var(--divider)}
+.map-cell{background:var(--card);padding:9px 10px}
+.map-cell span{display:block;font-size:10.5px;color:var(--text3);margin-bottom:3px}
+.map-cell b{font-family:var(--sb);font-weight:700;font-size:12.5px;line-height:1.3;display:block}
+.map-warn{display:flex;align-items:flex-start;gap:8px;padding:11px 14px;border-top:1px solid var(--divider);color:#FF6B4A}
+.map-warn p{margin:0;font-size:12px;line-height:1.45;color:var(--text2)}
+.map-warn>svg{flex:none;margin-top:1px}
+
+.map-legend{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--divider)}
+.map-chip{display:flex;align-items:center;gap:7px;background:var(--card);border:0;padding:10px 10px;
+  cursor:pointer;text-align:left;color:var(--text2);min-width:0;transition:.12s}
+.map-chip:hover{background:var(--row-hover)}
+.map-chip.on{background:var(--tabbar-active-bg);color:var(--text)}
+.map-chip.wide{grid-column:1 / -1}
+.map-chip i{width:10px;height:10px;border-radius:3px;flex:none}
+.map-chip .n{font-size:11px;font-weight:700;color:var(--text3);flex:none;font-variant-numeric:tabular-nums}
+.map-chip .nm{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-foot{font-size:11.5px;color:var(--text3);line-height:1.55;margin:0 0 4px}
 
 .highlight-card{padding:8px 14px;border-bottom:1px solid var(--divider)}
 .highlight-card:last-child{border-bottom:0}
