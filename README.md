@@ -9,7 +9,11 @@ data/
   roteiro-2026.json   ← voos, campings, riscos, os 13 dias, reservas, checklists...
   links.json          ← os links úteis, agrupados por categoria
   mapa-regioes.json   ← a geometria do mapa: uma região por dia de viagem
+  mymaps/*.csv        ← as 3 camadas do Google My Maps (região, passeio, parking)
 ```
+
+O conteúdo vem do documento `roteiro-islandia-2026` — a versão que está
+no app é a **v8** (`meta.versao`).
 
 Pra atualizar o roteiro, edite `data/roteiro-2026.json` — não precisa mexer
 em nenhum código. Dá pra editar direto pelo site do GitHub (abra o
@@ -31,10 +35,21 @@ campings e riscos.
   (`campsitePlanA`/`campsitePlanB`) e riscos por id (`riskIds`); o
   loader resolve essas referências para os objetos completos antes de
   chegar no app.
-- `reservasAntecipadas`, `checklistReservas` — o que reservar e quando.
+- `reservasAntecipadas` — cada reserva tem `status` (`confirmada` ou
+  `em-aberto`), `tipoRisco` (`ancora` ou `flexivel`) e planos B/C.
+- `checklistReservas` — `confirmadas` e `emAberto` referenciam ids de
+  `reservasAntecipadas`; `outrasPendencias` guarda o que não é passeio
+  (parking de Landmannalaugar, hotel do stopover) e `jaResolvido` o que
+  já saiu da lista.
+- `descobertasCandidatas` — atrações pesquisadas fora do plano A, com
+  `status` `opcao-b`, `opcao-c` ou `rejeitada` (evita repesquisar o que
+  já foi descartado).
+- `recursosMapa` — as camadas do Google My Maps e os CSVs de importação
+  em `data/mymaps/`. `linkMapa` fica `null` até o mapa ser publicado.
 - `emergencia`, `banhosTermaisNaturais`, `banhosPerigosos`,
-  `equipamentos`, `notasCamping`, `pendenciasGerais`, `notasContexto` —
-  informações de apoio, mostradas na aba **Info** do app.
+  `equipamentos` (inclui `notas` e o `planoCompraMontreal` do stopover),
+  `notasCamping`, `pendenciasGerais`, `notasContexto` —
+  informações de apoio, mostradas na aba **Infos** do app.
 
 ### Formato de um grupo em `links.json`
 
@@ -50,6 +65,14 @@ campings e riscos.
 
 `icone` aceita: `compass`, `tent`, `coin`, `alert`.
 
+### Os CSVs de `data/mymaps`
+
+Uma linha por ponto (`Nome,Latitude,Longitude,Camada,Dias,Notas`). Cada
+arquivo é importado como uma camada separada no Google My Maps
+(mymaps.google.com → Criar novo mapa → Importar, uma vez por arquivo),
+o que permite ligar e desligar região, passeio e parking
+independentemente.
+
 ### Estrutura de `mapa-regioes.json`
 
 O país inteiro dividido em 13 regiões — cada uma é o território mais
@@ -61,7 +84,8 @@ próximo das paradas daquele dia.
 - `paths` — o desenho de cada região. A chave `"0"` é o que fica fora do
   roteiro; chaves de três dígitos (`121`, `131`) são trechos de
   passagem, desenhados hachurados.
-- `ancoras` — onde fica o rótulo de cada região.
+- `ancoras` — onde fica o rótulo de cada região (o ponto mais folgado
+  dentro do polígono, pro círculo do número não vazar).
 - `costa` — o contorno do país.
 - `rota` — um ponto por dia, na ordem da viagem.
 
@@ -77,8 +101,10 @@ vindo de `roteiro-2026.json`; este arquivo só carrega a geografia.
 - **Listagem** — todos os destaques da viagem, filtráveis por risco do
   dia e com priorização (must / nice / could / pass).
 - **Conversor** — ISK para real e o custo estimado de combustível.
-- **Infos** — voos, emergência, checagem diária obrigatória, links
-  úteis, banhos termais, equipamentos e notas.
+- **Infos** — voos, emergência, checagem diária obrigatória, reservas
+  (confirmadas e em aberto), links úteis, banhos termais, equipamentos e
+  compras do stopover, notas, descobertas candidatas e os recursos de
+  mapa do My Maps.
 
 ## Rodar localmente
 

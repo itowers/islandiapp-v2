@@ -16,6 +16,9 @@ import {
   equipamentos,
   pendenciasGerais,
   notasContexto,
+  descobertasCandidatas,
+  recursosMapa,
+  reservaById,
   meta,
   RISK_LABEL,
   drivingLabel,
@@ -434,23 +437,11 @@ function Mapa() {
               const d = parseInt(key, 10);
               const a = mapaRegioes.ancoras[key];
               if (!a) return null;
-              let [x, y] = a;
+              const [x, y] = a;
               const on = d === sel;
               const cor = fillOf(d);
-              /* Vestmannaeyjar é uma ilha minúscula: anel no lugar e rótulo puxado por uma linha */
-              const island = d === 6;
-              if (island) {
-                x -= 46;
-                y -= 18;
-              }
               return (
                 <g key={key} className={on ? "lbl on" : "lbl"}>
-                  {island && (
-                    <>
-                      <circle cx={a[0]} cy={a[1]} r="9" fill="none" stroke={cor} strokeWidth="2.4" />
-                      <line className="leader" x1={a[0] - 7} y1={a[1] - 5} x2={a[0] - 34} y2={a[1] - 16} />
-                    </>
-                  )}
                   <circle cx={x} cy={y} r="20" stroke={cor} strokeWidth="2.4" fill={on ? cor : "var(--map-label-bg)"} />
                   <text x={x} y={y + 7.5} fill={on ? "#fff" : "var(--text)"}>{d}</text>
                 </g>
@@ -551,8 +542,8 @@ function Mapa() {
 
         <p className="map-foot">
           Áreas hachuradas são trecho de passagem: você atravessa dirigindo, sem parada prevista.
-          O cinza é o que fica fora do roteiro — Vestfirðir e o interior das Highlands além de
-          Landmannalaugar.
+          O cinza é o que fica fora do roteiro — Vestfirðir, o interior das Highlands além de
+          Landmannalaugar e Vestmannaeyjar, que saiu do roteiro na v6.
         </p>
       </div>
     </>
@@ -833,61 +824,65 @@ function Conversor() {
   );
 }
 
-/* ── tela: reservas ────────────────────────────────────────── */
-function Reservas() {
-  const byId = useMemo(() => Object.fromEntries(reservasAntecipadas.map((r) => [r.id, r])), []);
+/* ── bloco: reservas (usado dentro da aba Infos) ───────────── */
+function ReservasSections() {
+  const confirmadas = checklistReservas.confirmadas.map((id) => reservaById.get(id)).filter(Boolean);
+  const emAberto = checklistReservas.emAberto.map((id) => reservaById.get(id)).filter(Boolean);
+
   return (
     <>
-      <TopBar icon="cart" title="Reservas" />
-      <div className="scroll">
-        <GroupCard title="Reservas antecipadas" count={reservasAntecipadas.length}>
-          {reservasAntecipadas.map((r) => (
-            <div key={r.id} className="risk-row">
-              <div className="risk-row-top">
-                <h4>{r.nome}</h4>
-                <span className={r.tipoRisco === "ancora" ? "anchor-tag" : "flex-tag"}>{r.tipoRisco === "ancora" ? "âncora" : "flexível"}</span>
-              </div>
-              <p className="risk-trigger">Dia {r.dia} · {r.data}{r.horario ? ` · ${r.horario}` : ""} — {r.site}</p>
-              {r.observacao && <p className="risk-line">{r.observacao}</p>}
-              {r.planoB && <p className="risk-line"><b>Plano B:</b> {r.planoB.descricao} (Dia {r.planoB.dia} · {r.planoB.data})</p>}
-              {r.planoC && <p className="risk-line"><b>Plano C:</b> {r.planoC}</p>}
+      <GroupCard title="Reservas antecipadas" count={reservasAntecipadas.length}>
+        {reservasAntecipadas.map((r) => (
+          <div key={r.id} className="risk-row">
+            <div className="risk-row-top">
+              <h4>{r.nome}</h4>
+              <span className={r.tipoRisco === "ancora" ? "anchor-tag" : "flex-tag"}>{r.tipoRisco === "ancora" ? "âncora" : "flexível"}</span>
             </div>
-          ))}
-        </GroupCard>
+            <p className="risk-trigger">
+              Dia {r.dia} · {r.data}{r.horario ? ` · ${r.horario}` : ""} — {r.site} · {r.status === "confirmada" ? "confirmada" : "em aberto"}
+            </p>
+            {r.observacao && <p className="risk-line">{r.observacao}</p>}
+            {r.planoB && <p className="risk-line"><b>Plano B:</b> {r.planoB.descricao} (Dia {r.planoB.dia} · {r.planoB.data})</p>}
+            {r.planoC && <p className="risk-line"><b>Plano C:</b> {r.planoC}</p>}
+          </div>
+        ))}
+      </GroupCard>
 
-        <GroupCard title="Comprar esta semana">
-          {checklistReservas.estaSemana.map((id) => (
-            <div key={id} className="row" style={{ textDecoration: "none" }}>
-              <Badge color="#FF6B4A" icon="alert" size={36} />
-              <div className="row-body"><h4>{byId[id]?.nome ?? id}</h4></div>
+      <GroupCard title="Confirmadas" count={confirmadas.length}>
+        {confirmadas.map((r) => (
+          <div key={r.id} className="row" style={{ textDecoration: "none" }}>
+            <Badge color="#2FB35C" icon="star" size={36} />
+            <div className="row-body"><h4>{r.nome}</h4><p>{r.observacao}</p></div>
+          </div>
+        ))}
+      </GroupCard>
+      <GroupCard title="Reservas em aberto" count={emAberto.length}>
+        {emAberto.map((r) => (
+          <div key={r.id} className="row" style={{ textDecoration: "none" }}>
+            <Badge color="#F5A524" icon="cart" size={36} />
+            <div className="row-body"><h4>{r.nome}</h4><p>Dia {r.dia} · {r.data} — {r.site}</p></div>
+          </div>
+        ))}
+      </GroupCard>
+      <GroupCard title="Outras pendências de reserva" count={checklistReservas.outrasPendencias.length}>
+        {checklistReservas.outrasPendencias.map((it) => (
+          <div key={it.item} className="row" style={{ textDecoration: "none" }}>
+            <Badge color="#3B82F6" icon="info" size={36} />
+            <div className="row-body">
+              <h4>{it.item}</h4>
+              <p>{[it.dias, it.onde, it.status].filter(Boolean).join(" · ")}</p>
             </div>
-          ))}
-        </GroupCard>
-        <GroupCard title="Próximas semanas">
-          {checklistReservas.proximasSemanas.map((id) => (
-            <div key={id} className="row" style={{ textDecoration: "none" }}>
-              <Badge color="#F5A524" icon="cart" size={36} />
-              <div className="row-body"><h4>{byId[id]?.nome ?? id}</h4></div>
-            </div>
-          ))}
-        </GroupCard>
-        <GroupCard title="Mais perto da viagem">
-          {checklistReservas.maisPertoDaViagem.map((it) => (
-            <div key={it.item} className="row" style={{ textDecoration: "none" }}>
-              <Badge color="#3B82F6" icon="info" size={36} />
-              <div className="row-body"><h4>{it.item}</h4>{(it.dias || it.onde) && <p>{[it.dias, it.onde].filter(Boolean).join(" · ")}</p>}</div>
-            </div>
-          ))}
-        </GroupCard>
-        <GroupCard title="Já resolvido">
-          {checklistReservas.jaResolvido.map((it) => (
-            <div key={it.item} className="row" style={{ textDecoration: "none" }}>
-              <Badge color="#2FB35C" icon="star" size={36} />
-              <div className="row-body"><h4>{it.item}</h4><p>{it.status}</p></div>
-            </div>
-          ))}
-        </GroupCard>
-      </div>
+          </div>
+        ))}
+      </GroupCard>
+      <GroupCard title="Já resolvido">
+        {checklistReservas.jaResolvido.map((it) => (
+          <div key={it.item} className="row" style={{ textDecoration: "none" }}>
+            <Badge color="#2FB35C" icon="star" size={36} />
+            <div className="row-body"><h4>{it.item}</h4><p>{it.status}</p></div>
+          </div>
+        ))}
+      </GroupCard>
     </>
   );
 }
@@ -951,6 +946,8 @@ function Infos() {
           </div>
         </GroupCard>
 
+        <ReservasSections />
+
         {linkGroups.map((g) => (
           <GroupCard key={g.grupo} title={g.grupo} count={g.itens.length}>
             {g.itens.map((it) => (
@@ -999,6 +996,28 @@ function Infos() {
             </div>
           ))}
         </GroupCard>
+        <GroupCard title="Notas de equipamento">
+          {equipamentos.notas.map((n, i) => (
+            <div key={i} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.tent} icon="info" size={32} />
+              <div className="row-body"><p style={{ margin: 0 }}>{n}</p></div>
+            </div>
+          ))}
+        </GroupCard>
+        <GroupCard title="Compras no stopover de Montreal" count={equipamentos.planoCompraMontreal.lojas.length}>
+          <div className="empty-row" style={{ textAlign: "left" }}>
+            <p style={{ margin: 0 }}>{equipamentos.planoCompraMontreal.quando}</p>
+          </div>
+          {equipamentos.planoCompraMontreal.lojas.map((l) => (
+            <div key={l.loja} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.coin} icon="cart" size={36} />
+              <div className="row-body">
+                <h4>{l.loja}</h4>
+                <p>{l.foco}{l.endereco && l.endereco !== "-" ? ` — ${l.endereco}` : ""}</p>
+              </div>
+            </div>
+          ))}
+        </GroupCard>
 
         <GroupCard title="Notas de camping">
           {notasCamping.map((n, i) => (
@@ -1023,6 +1042,50 @@ function Infos() {
               <div className="row-body"><p style={{ margin: 0 }}>{n}</p></div>
             </div>
           ))}
+        </GroupCard>
+        <GroupCard title="Descobertas candidatas" count={descobertasCandidatas.length}>
+          {descobertasCandidatas.map((c) => (
+            <div key={c.nome} className="risk-row">
+              <div className="risk-row-top">
+                <h4>{c.nome}</h4>
+                <span className={c.status === "rejeitada" ? "flex-tag" : "anchor-tag"}>
+                  {c.status === "rejeitada" ? "rejeitada" : c.status === "opcao-b" ? "opção B" : "opção C"}
+                </span>
+              </div>
+              <p className="risk-trigger">{c.categoria} · {c.ondeEncaixa}</p>
+              <p className="risk-line"><b>Desvio:</b> {c.desvio}</p>
+              {c.custo !== "-" && <p className="risk-line"><b>Custo:</b> {c.custo}</p>}
+              {c.tempoVisita !== "-" && <p className="risk-line"><b>Tempo:</b> {c.tempoVisita}{c.precisa4x4 ? " · precisa de 4x4" : ""}</p>}
+              <p className="risk-line">{c.statusTexto}</p>
+            </div>
+          ))}
+        </GroupCard>
+
+        <GroupCard title="Recursos de mapa" count={recursosMapa.camadas.length}>
+          <div className="empty-row" style={{ textAlign: "left" }}>
+            <p style={{ margin: 0 }}>{recursosMapa.descricao}</p>
+          </div>
+          {recursosMapa.camadas.map((c) => (
+            <div key={c.nome} className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.compass} icon="map" size={36} />
+              <div className="row-body"><h4>{c.nome}</h4><p>{c.conteudo} — {c.arquivo}</p></div>
+            </div>
+          ))}
+          {recursosMapa.linkMapa ? (
+            <a className="row" href={recursosMapa.linkMapa} target="_blank" rel="noreferrer">
+              <Badge color={colors.compass} icon="link" size={36} />
+              <div className="row-body"><h4>Abrir no Google My Maps</h4><p>{recursosMapa.comoUsar}</p></div>
+              <Icon name="up-right" size={15} />
+            </a>
+          ) : (
+            <div className="row" style={{ textDecoration: "none" }}>
+              <Badge color={colors.coin} icon="info" size={36} />
+              <div className="row-body">
+                <h4>Link do mapa ainda não publicado</h4>
+                <p>{recursosMapa.comoUsar}</p>
+              </div>
+            </div>
+          )}
         </GroupCard>
       </div>
     </>
@@ -1264,7 +1327,6 @@ svg.mapa .region.on{stroke:var(--text);stroke-width:3.4}
 svg.mapa .region:focus{outline:none}
 svg.mapa .region:focus-visible{stroke:var(--blue);stroke-width:3.4}
 svg.mapa .coast{fill:none;stroke:var(--text);stroke-width:1.1;opacity:.45;pointer-events:none}
-svg.mapa .leader{stroke:var(--text);stroke-width:1.4;opacity:.5}
 svg.mapa .lbl{pointer-events:none}
 svg.mapa .lbl text{font-family:var(--sd);font-weight:800;font-size:22px;text-anchor:middle;font-variant-numeric:tabular-nums}
 svg.mapa .lbl-sub{font-family:var(--sb);font-weight:700;font-size:16px;letter-spacing:.06em;
