@@ -48,6 +48,9 @@ export const checagemDiariaObrigatoria = data.checagemDiariaObrigatoria;
 export const equipamentos = data.equipamentos;
 export const pendenciasGerais = data.pendenciasGerais;
 export const notasContexto = data.notasContexto;
+export const descobertasCandidatas = data.descobertasCandidatas;
+export const recursosMapa = data.recursosMapa;
+export const reservaById = new Map(reservasAntecipadas.map((r) => [r.id, r]));
 
 export const RISK_LABEL: Record<RiskLevel, string> = {
   low: "Risco baixo",

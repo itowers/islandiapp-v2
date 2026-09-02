@@ -157,6 +157,7 @@ export interface Emergencia {
 }
 
 export type TipoRiscoReserva = "ancora" | "flexivel";
+export type StatusReserva = "confirmada" | "em-aberto";
 
 export interface ReservaAntecipada {
   id: string;
@@ -166,6 +167,7 @@ export interface ReservaAntecipada {
   data: string;
   horario?: string;
   tipoRisco: TipoRiscoReserva;
+  status: StatusReserva;
   planoB?: { descricao: string; dia: number; data: string };
   planoC?: string;
   observacao?: string;
@@ -180,9 +182,12 @@ export interface ChecklistItemDetalhado {
 }
 
 export interface ChecklistReservas {
-  estaSemana: string[];
-  proximasSemanas: string[];
-  maisPertoDaViagem: ChecklistItemDetalhado[];
+  /** ids de ReservaAntecipada ja fechadas */
+  confirmadas: string[];
+  /** ids de ReservaAntecipada ainda por comprar */
+  emAberto: string[];
+  /** pendencias que nao sao passeio (parking, hotel do stopover...) */
+  outrasPendencias: ChecklistItemDetalhado[];
   jaResolvido: ChecklistItemDetalhado[];
 }
 
@@ -205,10 +210,52 @@ export interface ChecagemDiariaObrigatoria {
   quando: string;
 }
 
+export interface LojaMontreal {
+  loja: string;
+  endereco: string;
+  foco: string;
+}
+
+export interface PlanoCompraMontreal {
+  quando: string;
+  lojas: LojaMontreal[];
+}
+
 export interface Equipamentos {
   comprados: string[];
   pendentes: string[];
   avaliadosNaoComprados: string[];
+  notas: string[];
+  planoCompraMontreal: PlanoCompraMontreal;
+}
+
+/** Secao 10 do roteiro: atracoes pesquisadas fora do plano A. */
+export type StatusCandidata = "opcao-b" | "opcao-c" | "rejeitada";
+
+export interface DescobertaCandidata {
+  nome: string;
+  categoria: string;
+  ondeEncaixa: string;
+  desvio: string;
+  custo: string;
+  precisa4x4: boolean;
+  tempoVisita: string;
+  status: StatusCandidata;
+  statusTexto: string;
+}
+
+/** Secao 11 do roteiro: as camadas do Google My Maps. */
+export interface CamadaMapa {
+  nome: string;
+  conteudo: string;
+  arquivo: string;
+}
+
+export interface RecursosMapa {
+  descricao: string;
+  camadas: CamadaMapa[];
+  comoUsar: string;
+  linkMapa: string | null;
 }
 
 export interface RoteiroData {
@@ -227,6 +274,8 @@ export interface RoteiroData {
   equipamentos: Equipamentos;
   pendenciasGerais: string[];
   notasContexto: string[];
+  descobertasCandidatas: DescobertaCandidata[];
+  recursosMapa: RecursosMapa;
 }
 
 export interface LinkItem {

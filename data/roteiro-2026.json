@@ -1,8 +1,8 @@
 {
   "meta": {
-    "versao": "2.0",
-    "data": "2026-08-02",
-    "fonteOriginal": "roteiro-islandia-2026.md v2",
+    "versao": "8.0",
+    "data": "2026-09-02",
+    "fonteOriginal": "roteiro-islandia-2026 v8",
     "viagem": {
       "inicio": "2026-09-07",
       "fim": "2026-09-19",
@@ -15,28 +15,35 @@
   "voos": {
     "ida": [
       {
-        "trecho": "Sao Paulo - Montreal",
-        "partida": "2026-09-05T21:00:00-03:00"
+        "trecho": "Sao Paulo (GRU) -> Montreal (YUL) - AC 97",
+        "partida": "2026-09-05T21:00:00-03:00",
+        "chegada": "2026-09-06T06:10:00-04:00"
       },
       {
         "trecho": "Stopover Montreal",
         "duracaoHoras": 16,
-        "observacao": "eTA do Canada necessario - ja aprovado"
+        "observacao": "eTA do Canada aprovado. Janela de compras dos equipamentos pendentes"
       },
       {
-        "trecho": "Montreal - Reykjavik (KEF)",
+        "trecho": "Montreal (YUL) -> Reykjavik (KEF) - AC 912",
+        "partida": "2026-09-06T22:55:00-04:00",
         "chegada": "2026-09-07T07:55:00"
       }
     ],
     "volta": [
       {
-        "trecho": "Reykjavik (KEF) - Montreal",
-        "partida": "2026-09-20T09:15:00"
+        "trecho": "Reykjavik (KEF) -> Montreal (YUL) - AC 913",
+        "partida": "2026-09-20"
       },
       {
-        "trecho": "Montreal - Sao Paulo",
-        "partida": "2026-09-20T22:55:00",
-        "chegadaBrasil": "2026-09-21"
+        "trecho": "Stopover Montreal",
+        "duracaoHoras": 12.25,
+        "observacao": "Hotel ainda nao reservado - pendencia aberta"
+      },
+      {
+        "trecho": "Montreal (YUL) -> Sao Paulo (GRU) - AC 96",
+        "partida": "2026-09-20T22:55:00-04:00",
+        "chegadaBrasil": "2026-09-21T09:50:00"
       }
     ]
   },
@@ -45,8 +52,8 @@
       "id": "reykjavik-laugardalur",
       "name": "Reykjavik Campsite (Laugardalur)",
       "coords": [
-        64.1466,
-        -21.8719
+        64.146154,
+        -21.876019
       ],
       "dumpStation": true,
       "electricity": true,
@@ -54,14 +61,15 @@
       "laundry": true,
       "lightPollution": 3,
       "windExposure": "low",
-      "phone": "+354 568 6944"
+      "phone": "+354 568 6944",
+      "notes": "Camping da chegada (Dia 1) e da ultima noite (Dia 13)."
     },
     {
       "id": "thingvellir-leirar",
       "name": "Thingvellir (Leirar)",
       "coords": [
-        64.2559,
-        -21.13
+        64.2800388,
+        -21.0857413
       ],
       "dumpStation": true,
       "electricity": false,
@@ -75,8 +83,8 @@
       "id": "landmannalaugar",
       "name": "Landmannalaugar (Brennisteinsalda)",
       "coords": [
-        63.993,
-        -19.061
+        63.9906437,
+        -19.0606999
       ],
       "dumpStation": false,
       "electricity": false,
@@ -85,7 +93,7 @@
       "lightPollution": 0,
       "windExposure": "high",
       "seasonEnd": "2026-09-20",
-      "notes": "Fonte termal natural gratis no camping."
+      "notes": "Fonte termal natural gratis no camping. Estacionamento pago via parka.is - fallback: chegar depois das 16h no Dia 3 dispensa a reserva."
     },
     {
       "id": "landmannahellir",
@@ -106,8 +114,8 @@
       "id": "skogar",
       "name": "Skogar (em frente a cachoeira)",
       "coords": [
-        63.53,
-        -19.511
+        63.5279528,
+        -19.5126793
       ],
       "dumpStation": true,
       "electricity": true,
@@ -145,36 +153,6 @@
       "windExposure": "high"
     },
     {
-      "id": "vestmannaeyjar",
-      "name": "Vestmannaeyjar (Herjolfsdalur)",
-      "coords": [
-        63.44,
-        -20.283
-      ],
-      "dumpStation": true,
-      "electricity": true,
-      "hotShower": true,
-      "laundry": false,
-      "lightPollution": 2,
-      "windExposure": "med"
-    },
-    {
-      "id": "thakgil",
-      "name": "Thakgil",
-      "coords": [
-        63.523,
-        -18.83
-      ],
-      "dumpStation": false,
-      "electricity": false,
-      "hotShower": true,
-      "laundry": false,
-      "lightPollution": 0,
-      "windExposure": "low",
-      "seasonEnd": "2026-09-15",
-      "notes": "Muito abrigado do vento. Estrada 214 e cascalho."
-    },
-    {
       "id": "kirkjubaejarklaustur",
       "name": "Kirkjubaejarklaustur",
       "coords": [
@@ -192,15 +170,31 @@
       "id": "skaftafell",
       "name": "Skaftafell Campground",
       "coords": [
-        64.016,
-        -16.966
+        64.0155263,
+        -16.9716248
       ],
       "dumpStation": true,
       "electricity": true,
       "hotShower": true,
       "laundry": true,
       "lightPollution": 0,
-      "windExposure": "med"
+      "windExposure": "med",
+      "notes": "Base dos Dias 6 e 7 - dentro do parque, ponto de partida do glacier hike."
+    },
+    {
+      "id": "svinafell",
+      "name": "Svinafell Campsite & Huts",
+      "coords": [
+        63.9908,
+        -16.8747
+      ],
+      "dumpStation": true,
+      "electricity": true,
+      "hotShower": true,
+      "laundry": true,
+      "lightPollution": 0,
+      "windExposure": "med",
+      "notes": "Cozinha interna equipada, 7km do Skaftafell. Plano B dos Dias 6-7."
     },
     {
       "id": "hali",
@@ -220,8 +214,8 @@
       "id": "hofn",
       "name": "Hofn",
       "coords": [
-        64.25,
-        -15.21
+        64.258321,
+        -15.2030289
       ],
       "dumpStation": true,
       "electricity": true,
@@ -234,8 +228,8 @@
       "id": "seydisfjordur",
       "name": "Seydisfjordur",
       "coords": [
-        65.262,
-        -13.993
+        65.2604585,
+        -14.0111549
       ],
       "dumpStation": true,
       "electricity": true,
@@ -263,8 +257,8 @@
       "id": "myvatn-hlid",
       "name": "Hlid / Reykjahlid (Myvatn)",
       "coords": [
-        65.644,
-        -16.913
+        65.6407893,
+        -16.9133381
       ],
       "dumpStation": true,
       "electricity": true,
@@ -291,22 +285,23 @@
       "id": "akureyri-hamrar",
       "name": "Akureyri (Hamrar)",
       "coords": [
-        65.66,
-        -18.1
+        65.6483814,
+        -18.1032814
       ],
       "dumpStation": true,
       "electricity": true,
       "hotShower": true,
       "laundry": true,
       "lightPollution": 3,
-      "windExposure": "low"
+      "windExposure": "low",
+      "notes": "Forest Lagoon fica a 10min do camping - slot noturno."
     },
     {
       "id": "arnarstapi",
       "name": "Arnarstapi / Hellissandur",
       "coords": [
-        64.769,
-        -23.622
+        64.7669302,
+        -23.6349912
       ],
       "dumpStation": true,
       "electricity": true,
@@ -400,34 +395,34 @@
       }
     },
     {
-      "id": "ferry",
-      "label": "Ferry para Vestmannaeyjar cancelado",
+      "id": "reynisfjara",
+      "label": "Reynisfjara - erosao e ondas sneaker",
       "dayNumbers": [
         6
       ],
       "trigger": {
-        "kind": "ferry",
-        "route": "landeyjahofn"
+        "kind": "manual"
       },
       "isAnchor": false,
       "operator": {
-        "name": "Herjolfur",
-        "url": "https://herjolfur.is"
+        "name": "SafeTravel - Black Beach",
+        "url": "https://safetravel.is/travel-conditions/blackbeach-safety/"
       },
       "planB": {
-        "description": "Dormir em Thakgil ou Vik e tentar no dia seguinte.",
-        "newCampsite": "thakgil"
+        "description": "Checar safetravel.is no dia. Nunca virar as costas para o mar, manter distancia da agua e tratar a parada como curta e flexivel."
       },
       "planC": {
-        "description": "Cortar Vestmannaeyjar e seguir direto para Skaftafell.",
-        "newCampsite": "skaftafell"
+        "description": "Se o mar estiver muito agitado ou a praia inacessivel, ver de longe do mirante e seguir para Vik.",
+        "dropHighlights": [
+          "reynisfjara"
+        ]
       }
     },
     {
       "id": "glacier-hike",
-      "label": "Glacier hike cancelado",
+      "label": "Glacier Explorer (Falljokull) cancelado",
       "dayNumbers": [
-        8
+        7
       ],
       "trigger": {
         "kind": "wind",
@@ -435,15 +430,11 @@
       },
       "isAnchor": true,
       "operator": {
-        "name": "Glacier Guides",
-        "url": "https://glacierguides.is"
-      },
-      "rescheduleWindow": {
-        "dayN": 7,
-        "period": "afternoon"
+        "name": "Arctic Adventures",
+        "url": "https://arcticadventures.is"
       },
       "planB": {
-        "description": "Perguntar por horario na tarde do Dia 7 (13/09)."
+        "description": "Verificar a proxima janela disponivel com a Arctic Adventures no local (Skaftafell Base Camp)."
       },
       "planC": {
         "description": "Svartifoss + mirante do glaciar, sem o hike.",
@@ -496,25 +487,6 @@
       }
     },
     {
-      "id": "vento-skeidararsandur",
-      "label": "Vento forte no Skeidararsandur",
-      "dayNumbers": [
-        7
-      ],
-      "trigger": {
-        "kind": "wind",
-        "maxMs": 20
-      },
-      "isAnchor": false,
-      "planB": {
-        "description": "Esperar a rajada baixar. Dormir em Kirkjubaejarklaustur se necessario.",
-        "newCampsite": "kirkjubaejarklaustur"
-      },
-      "planC": {
-        "description": "Nao dirigir. Ficar parado ate o vento ceder."
-      }
-    },
-    {
       "id": "dia-longo",
       "label": "Dia de conducao longa (>4h)",
       "dayNumbers": [
@@ -530,7 +502,7 @@
         "description": "Sair as 7h e revezar quem dirige."
       },
       "planC": {
-        "description": "Sacrificar uma parada turistica — nunca o camping."
+        "description": "Sacrificar uma parada turistica - nunca o camping."
       }
     }
   ],
@@ -600,17 +572,17 @@
       "highlights": [
         {
           "id": "thrihnukagigur",
-          "name": "Thrihnukagigur — Inside the Volcano",
+          "name": "Thrihnukagigur - Inside the Volcano",
           "kind": "tour",
           "coords": [
-            63.995,
-            -21.698
+            63.998462,
+            -21.6989636
           ],
           "free": false,
           "needsBooking": true,
-          "visitMinutes": 360,
+          "visitMinutes": 300,
           "weatherSensitive": true,
-          "note": "Reserva antecipada. ~USD 400/adulto.",
+          "note": "10:30 - confirmado e pago. Booking IVO-T140578482, invoice IVO-99446319.",
           "imageUrl": "/images/thrihnukagigur.jpg"
         }
       ],
@@ -628,7 +600,7 @@
         "trecho": "Reykjavik/Blafjoll -> Thingvellir",
         "tempoDirecaoTexto": "~2h",
         "destaquesResumo": [
-          "Thrihnukagigur Inside the Volcano - 10:30, tour reservado com antecedencia"
+          "Thrihnukagigur Inside the Volcano - 10:30, confirmado e pago"
         ],
         "campingPlanoCTexto": "Laugarvatn Campsite (perto do Fontana spa)"
       }
@@ -636,7 +608,7 @@
     {
       "n": 3,
       "date": "2026-09-09",
-      "title": "Golden Circle -> Highlands (F26/F225) -> Landmannalaugar",
+      "title": "Thingvellir -> Golden Circle -> Highlands (F26/F225) -> Landmannalaugar",
       "drivingMinutes": 300,
       "risk": "high",
       "isAnchor": false,
@@ -656,16 +628,30 @@
           "imageUrl": "/images/thingvellir.jpg"
         },
         {
+          "id": "kerid",
+          "name": "Cratera Kerid",
+          "kind": "crater",
+          "coords": [
+            64.0412785,
+            -20.8851466
+          ],
+          "free": false,
+          "needsBooking": false,
+          "visitMinutes": 40,
+          "note": "Ordem corrigida: Kerid antes de Geysir/Gullfoss, para evitar retrocesso.",
+          "imageUrl": "/images/kerid.jpg"
+        },
+        {
           "id": "geysir",
-          "name": "Geysir",
+          "name": "Strokkur / Geysir",
           "kind": "hotspring",
           "coords": [
-            64.3104,
-            -20.3024
+            64.3127094,
+            -20.300721
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60,
+          "visitMinutes": 45,
           "imageUrl": "/images/geysir.jpg"
         },
         {
@@ -673,8 +659,8 @@
           "name": "Gullfoss",
           "kind": "waterfall",
           "coords": [
-            64.3271,
-            -20.1199
+            64.3270716,
+            -20.1199478
           ],
           "free": true,
           "needsBooking": false,
@@ -683,29 +669,17 @@
           "imageUrl": "/images/gullfoss.jpg"
         },
         {
-          "id": "kerid",
-          "name": "Cratera Kerid",
-          "kind": "crater",
-          "coords": [
-            64.0411,
-            -20.885
-          ],
-          "free": false,
-          "needsBooking": false,
-          "visitMinutes": 40,
-          "imageUrl": "/images/kerid.jpg"
-        },
-        {
           "id": "secret-lagoon",
           "name": "Secret Lagoon (Fludir)",
           "kind": "lagoon",
           "coords": [
-            64.138,
-            -20.309
+            64.1373976,
+            -20.3096984
           ],
           "free": false,
           "needsBooking": true,
           "visitMinutes": 120,
+          "note": "Pago (~6-7.000 ISK), reserva recomendada.",
           "imageUrl": "/images/secret-lagoon.jpg"
         }
       ],
@@ -721,22 +695,22 @@
       ],
       "narrativa": {
         "diaSemana": "Qua",
-        "trecho": "Golden Circle -> Highlands (F26/F225, rota norte) -> Landmannalaugar",
+        "trecho": "Thingvellir -> Kerid -> Geysir -> Gullfoss -> Highlands (F26/F225, rota norte) -> Landmannalaugar",
         "tempoDirecaoTexto": "~5h",
         "destaquesResumo": [
-          "Thingvellir",
-          "Geysir",
-          "Gullfoss",
           "Kerid crater",
-          "Secret Lagoon (Fludir)"
+          "Strokkur / Geysir",
+          "Gullfoss",
+          "Secret Lagoon (Fludir)",
+          "Parking de Landmannalaugar via parka.is - fallback: chegar depois das 16h"
         ],
-        "campingPlanoCTexto": "Hrauneyjar Highland Center"
+        "campingPlanoCTexto": "Hrauneyjar Highland Center (mais pra tras na rota, terreno mais seguro)"
       }
     },
     {
       "n": 4,
       "date": "2026-09-10",
-      "title": "Landmannalaugar — dia de trilhas",
+      "title": "Landmannalaugar - dia de trilhas",
       "drivingMinutes": 60,
       "risk": "medium",
       "isAnchor": false,
@@ -747,13 +721,14 @@
           "name": "Trilha Blahnukur",
           "kind": "volcano",
           "coords": [
-            63.99,
-            -19.07
+            63.9772222,
+            -19.0686111
           ],
           "free": true,
           "needsBooking": false,
           "visitMinutes": 210,
           "weatherSensitive": true,
+          "note": "Trilha panoramica em Landmannalaugar.",
           "imageUrl": "/images/blahnukur.jpg"
         },
         {
@@ -761,8 +736,8 @@
           "name": "Fonte termal natural do camping",
           "kind": "hotspring",
           "coords": [
-            63.993,
-            -19.061
+            63.9906437,
+            -19.0606999
           ],
           "free": true,
           "needsBooking": false,
@@ -771,7 +746,9 @@
         }
       ],
       "campsitePlanA": "landmannalaugar",
-      "riskIds": [],
+      "riskIds": [
+        "froads-fechadas"
+      ],
       "mandatoryChecks": [
         "safetravel"
       ],
@@ -784,7 +761,7 @@
           "Crateras",
           "Fonte termal natural gratis no camping"
         ],
-        "campingPlanoCTexto": "Hrauneyjar Highland Center"
+        "campingPlanoCTexto": "Hrauneyjar Highland Center (mais pra tras na rota, terreno mais seguro)"
       }
     },
     {
@@ -801,8 +778,8 @@
           "name": "Seljalandsfoss",
           "kind": "waterfall",
           "coords": [
-            63.6156,
-            -19.9886
+            63.6156232,
+            -19.9885688
           ],
           "free": true,
           "needsBooking": false,
@@ -815,8 +792,8 @@
           "name": "Skogafoss",
           "kind": "waterfall",
           "coords": [
-            63.5321,
-            -19.5114
+            63.5320523,
+            -19.5113706
           ],
           "free": true,
           "needsBooking": false,
@@ -828,18 +805,18 @@
           "name": "Seljavallalaug (piscina de 1923)",
           "kind": "hotspring",
           "coords": [
-            63.567,
-            -19.607
+            63.5659791,
+            -19.6091423
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 120,
-          "note": "Caminhada de ~20 min ate a piscina.",
+          "visitMinutes": 90,
+          "note": "Gratis, sem reserva. Caminhada de ~20 min ate a piscina.",
           "imageUrl": "/images/seljavallalaug.jpg"
         }
       ],
       "campsitePlanA": "skogar",
-      "campsitePlanB": "hvolsvollur",
+      "campsitePlanB": "vik",
       "riskIds": [
         "froads-fechadas"
       ],
@@ -848,12 +825,13 @@
       ],
       "narrativa": {
         "diaSemana": "Sex",
-        "trecho": "Sair das Highlands (mesma rota, evitar F208 sul) -> Costa Sul -> Skogar",
+        "trecho": "Sair das Highlands (evitar F208 sul) -> Costa Sul -> Skogar",
         "tempoDirecaoTexto": "~4h",
         "destaquesResumo": [
           "Seljalandsfoss",
           "Skogafoss",
-          "Seljavallalaug (piscina historica gratis)"
+          "Seljavallalaug (piscina historica gratis)",
+          "Solheimasandur cabe aqui como opcao B - ver descobertas candidatas"
         ],
         "campingPlanoCTexto": "Hvolsvollur Campsite"
       }
@@ -861,129 +839,132 @@
     {
       "n": 6,
       "date": "2026-09-12",
-      "title": "Reynisfjara -> Vik -> ferry -> Vestmannaeyjar",
-      "drivingMinutes": 60,
-      "risk": "high",
+      "title": "Skogar -> Reynisfjara -> Vik -> Fjadrargljufur -> Skaftafell",
+      "drivingMinutes": 195,
+      "risk": "medium",
       "isAnchor": false,
-      "region": "vestmannaeyjar",
+      "region": "south-coast",
       "highlights": [
         {
           "id": "reynisfjara",
           "name": "Reynisfjara",
           "kind": "beach",
           "coords": [
-            63.403,
-            -19.044
+            63.4142559,
+            -19.0104132
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60,
+          "visitMinutes": 45,
           "weatherSensitive": true,
-          "note": "PERIGO: ondas sneaker. Nunca de costas para o mar.",
+          "note": "ATENCAO: erosao e colapso parcial em fev/2026, praia menor e mais rochosa. Checar safetravel.is no dia. Ondas sneaker - nunca de costas para o mar.",
           "imageUrl": "/images/reynisfjara.jpg"
         },
         {
-          "id": "eldfell",
-          "name": "Vulcao Eldfell",
-          "kind": "volcano",
+          "id": "vik",
+          "name": "Vik i Myrdal",
+          "kind": "town",
           "coords": [
-            63.433,
-            -20.247
+            63.4176505,
+            -18.9974395
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 150,
-          "weatherSensitive": true,
-          "imageUrl": "/images/eldfell.jpg"
+          "visitMinutes": 45
         },
-        {
-          "id": "eldheimar",
-          "name": "Museu Eldheimar",
-          "kind": "museum",
-          "coords": [
-            63.438,
-            -20.262
-          ],
-          "free": false,
-          "needsBooking": false,
-          "visitMinutes": 90,
-          "imageUrl": "/images/eldheimar.jpg"
-        }
-      ],
-      "campsitePlanA": "vestmannaeyjar",
-      "campsitePlanB": "thakgil",
-      "riskIds": [
-        "ferry"
-      ],
-      "mandatoryChecks": [
-        "ferry",
-        "road"
-      ],
-      "narrativa": {
-        "diaSemana": "Sab",
-        "trecho": "Reynisfjara -> Vik -> ferry Landeyjahofn -> Vestmannaeyjar",
-        "tempoDirecaoTexto": "~1h + ferry 35min",
-        "destaquesResumo": [
-          "Vulcao Eldfell (erupcao 1973)",
-          "Eldheimar museu",
-          "Puffins (fim de temporada)"
-        ],
-        "campingPlanoCTexto": "Vik Campsite"
-      }
-    },
-    {
-      "n": 7,
-      "date": "2026-09-13",
-      "title": "Volta -> Kirkjubaejarklaustur -> Skaftafell",
-      "drivingMinutes": 150,
-      "risk": "medium",
-      "isAnchor": false,
-      "region": "southeast",
-      "highlights": [
         {
           "id": "fjadrargljufur",
           "name": "Canyon Fjadrargljufur",
           "kind": "canyon",
           "coords": [
-            63.771,
-            -18.172
+            63.771279,
+            -18.1718159
           ],
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
           "imageUrl": "/images/fjadrargljufur.jpg"
+        }
+      ],
+      "campsitePlanA": "skaftafell",
+      "campsitePlanB": "svinafell",
+      "riskIds": [
+        "reynisfjara"
+      ],
+      "mandatoryChecks": [
+        "road",
+        "safetravel"
+      ],
+      "narrativa": {
+        "diaSemana": "Sab",
+        "trecho": "Skogar -> Reynisfjara -> Vik -> Kirkjubaejarklaustur (Fjadrargljufur) -> Skaftafell",
+        "tempoDirecaoTexto": "~3-3,5h",
+        "destaquesResumo": [
+          "Reynisfjara (parada curta e flexivel - checar safetravel.is)",
+          "Vilarejo de Vik",
+          "Canyon Fjadrargljufur",
+          "Sem ferry/Vestmannaeyjar - removida do roteiro na v6"
+        ],
+        "campingPlanoCTexto": "Kirkjubaejarklaustur Campsite"
+      }
+    },
+    {
+      "n": 7,
+      "date": "2026-09-13",
+      "title": "Skaftafell - dia dedicado ao glaciar",
+      "drivingMinutes": 30,
+      "risk": "high",
+      "isAnchor": true,
+      "region": "skaftafell",
+      "highlights": [
+        {
+          "id": "glacier-hike",
+          "name": "Glacier Explorer - Falljokull",
+          "kind": "glacier",
+          "coords": [
+            64.0268002,
+            -16.9171872
+          ],
+          "free": false,
+          "needsBooking": true,
+          "visitMinutes": 450,
+          "weatherSensitive": true,
+          "note": "11:00 - confirmado. Ticket ARC-T140762148, 2 participantes (Arctic Adventures, Skaftafell Base Camp). ~7,5h bloqueadas com a logistica.",
+          "imageUrl": "/images/glacier-hike.jpg"
         },
         {
           "id": "svartifoss",
           "name": "Svartifoss",
           "kind": "waterfall",
           "coords": [
-            64.027,
-            -16.975
+            64.0276,
+            -16.9752
           ],
           "free": true,
           "needsBooking": false,
           "visitMinutes": 120,
+          "note": "Opcional: encaixa na tarde se o tour terminar cedo. E tambem o plano C se o hike cancelar.",
           "imageUrl": "/images/svartifoss.jpg"
         }
       ],
       "campsitePlanA": "skaftafell",
-      "campsitePlanB": "kirkjubaejarklaustur",
+      "campsitePlanB": "svinafell",
       "riskIds": [
-        "vento-skeidararsandur"
+        "glacier-hike"
       ],
       "mandatoryChecks": [
+        "safetravel",
         "road"
       ],
       "narrativa": {
         "diaSemana": "Dom",
-        "trecho": "Volta -> Kirkjubaejarklaustur (Fjadrargljufur) -> Skaftafell",
-        "tempoDirecaoTexto": "~2,5h",
+        "trecho": "Skaftafell - dia dedicado ao glaciar",
+        "tempoDirecaoTexto": "~local",
         "destaquesResumo": [
-          "Fjadrargljufur canyon",
-          "Plano B do glacier hike se precisar remarcar do dia 8"
+          "Glacier Explorer (Falljokull, Arctic Adventures) - 11:00, confirmado",
+          "Dia isolado, sem pressa e sem Diamond Beach acumulado"
         ],
-        "campingPlanoCTexto": "Kirkjubaejarklaustur Campsite"
+        "campingPlanoCTexto": "Hali Country Camping"
       }
     },
     {
@@ -991,32 +972,30 @@
       "date": "2026-09-14",
       "title": "Skaftafell -> Jokulsarlon -> Hofn",
       "drivingMinutes": 90,
-      "risk": "high",
-      "isAnchor": true,
+      "risk": "low",
+      "isAnchor": false,
       "region": "southeast",
       "highlights": [
         {
-          "id": "glacier-hike",
-          "name": "Glacier hike Falljokull",
-          "kind": "glacier",
+          "id": "fjallsarlon",
+          "name": "Fjallsarlon",
+          "kind": "lagoon",
           "coords": [
-            63.99,
-            -16.83
+            64.0122,
+            -16.3872
           ],
-          "free": false,
-          "needsBooking": true,
-          "visitMinutes": 300,
-          "weatherSensitive": true,
-          "note": "Guia certificado obrigatorio.",
-          "imageUrl": "/images/glacier-hike.jpg"
+          "free": true,
+          "needsBooking": false,
+          "visitMinutes": 45,
+          "note": "Lagoa menor e mais tranquila, no caminho para Jokulsarlon."
         },
         {
           "id": "jokulsarlon",
           "name": "Jokulsarlon",
           "kind": "lagoon",
           "coords": [
-            64.048,
-            -16.179
+            64.0784458,
+            -16.2305536
           ],
           "free": true,
           "needsBooking": false,
@@ -1028,30 +1007,29 @@
           "name": "Diamond Beach",
           "kind": "beach",
           "coords": [
-            64.043,
-            -16.175
+            64.044334,
+            -16.1776622
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 45,
+          "visitMinutes": 60,
           "imageUrl": "/images/diamond-beach.jpg"
         }
       ],
       "campsitePlanA": "hofn",
       "campsitePlanB": "hali",
-      "riskIds": [
-        "glacier-hike"
-      ],
+      "riskIds": [],
       "mandatoryChecks": [
-        "road",
-        "safetravel"
+        "road"
       ],
       "narrativa": {
         "diaSemana": "Seg",
         "trecho": "Skaftafell -> Jokulsarlon/Diamond Beach -> Hofn",
         "tempoDirecaoTexto": "~1,5h",
         "destaquesResumo": [
-          "Glacier hike Falljokull (Skaftafell) - tour reservado com antecedencia"
+          "Jokulsarlon e Diamond Beach com calma",
+          "Fjallsarlon",
+          "Sem o glacier hike acumulado - dia leve"
         ],
         "campingPlanoCTexto": "Smyrlabjorg (fazenda/camping entre Jokulsarlon e Hofn)"
       }
@@ -1070,8 +1048,8 @@
           "name": "Djupivogur",
           "kind": "town",
           "coords": [
-            64.656,
-            -14.283
+            64.6567526,
+            -14.2848307
           ],
           "free": true,
           "needsBooking": false,
@@ -1079,30 +1057,31 @@
           "imageUrl": "/images/djupivogur.jpg"
         },
         {
+          "id": "vok-baths",
+          "name": "Vok Baths",
+          "kind": "lagoon",
+          "coords": [
+            65.3030639,
+            -14.4469872
+          ],
+          "free": false,
+          "needsBooking": true,
+          "visitMinutes": 105,
+          "note": "Piscinas flutuantes em Egilsstadir. Reserva em aberto.",
+          "imageUrl": "/images/vok-baths.jpg"
+        },
+        {
           "id": "seydisfjordur-vila",
           "name": "Vilarejo colorido de Seydisfjordur",
           "kind": "town",
           "coords": [
-            65.262,
-            -13.993
+            65.2602307,
+            -14.0095466
           ],
           "free": true,
           "needsBooking": false,
           "visitMinutes": 90,
           "imageUrl": "/images/seydisfjordur-vila.jpg"
-        },
-        {
-          "id": "vok-baths",
-          "name": "Vok Baths",
-          "kind": "lagoon",
-          "coords": [
-            65.304,
-            -14.51
-          ],
-          "free": false,
-          "needsBooking": true,
-          "visitMinutes": 150,
-          "imageUrl": "/images/vok-baths.jpg"
         }
       ],
       "campsitePlanA": "seydisfjordur",
@@ -1121,7 +1100,8 @@
         "tempoDirecaoTexto": "~4,5-5h",
         "destaquesResumo": [
           "Vilarejo colorido",
-          "Vok Baths (Egilsstadir)"
+          "Vok Baths (Egilsstadir)",
+          "Studlagil como opcao C se o desvio a Seydisfjordur for cortado"
         ],
         "campingPlanoCTexto": "Djupivogur Campsite (no caminho, mais cedo na rota)"
       }
@@ -1140,12 +1120,12 @@
           "name": "Dettifoss (lado leste, 864)",
           "kind": "waterfall",
           "coords": [
-            65.815,
-            -16.384
+            65.8146662,
+            -16.384576
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90,
+          "visitMinutes": 45,
           "weatherSensitive": true,
           "imageUrl": "/images/dettifoss.jpg"
         },
@@ -1154,8 +1134,8 @@
           "name": "Hverir",
           "kind": "hotspring",
           "coords": [
-            65.64,
-            -16.809
+            65.6409144,
+            -16.8093111
           ],
           "free": true,
           "needsBooking": false,
@@ -1167,12 +1147,12 @@
           "name": "Krafla / Viti",
           "kind": "crater",
           "coords": [
-            65.715,
-            -16.78
+            65.7171196,
+            -16.7544199
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90,
+          "visitMinutes": 45,
           "imageUrl": "/images/krafla.jpg"
         },
         {
@@ -1180,12 +1160,12 @@
           "name": "Dimmuborgir",
           "kind": "canyon",
           "coords": [
-            65.59,
-            -16.91
+            65.5912203,
+            -16.91228
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 90,
+          "visitMinutes": 60,
           "imageUrl": "/images/dimmuborgir.jpg"
         },
         {
@@ -1193,12 +1173,13 @@
           "name": "Myvatn Nature Baths",
           "kind": "lagoon",
           "coords": [
-            65.63,
-            -16.848
+            65.6308946,
+            -16.8476117
           ],
           "free": false,
           "needsBooking": true,
-          "visitMinutes": 150,
+          "visitMinutes": 120,
+          "note": "Reserva em aberto. Considerar o horario do por do sol.",
           "imageUrl": "/images/myvatn-baths.jpg"
         }
       ],
@@ -1219,7 +1200,8 @@
           "Hverir",
           "Krafla",
           "Dimmuborgir",
-          "Myvatn Nature Baths"
+          "Myvatn Nature Baths",
+          "Asbyrgi como opcao B - ver descobertas candidatas"
         ],
         "campingPlanoCTexto": "Vogar Campsite (perto do Vogafjos)"
       }
@@ -1227,23 +1209,38 @@
     {
       "n": 11,
       "date": "2026-09-17",
-      "title": "Myvatn -> Godafoss -> Akureyri",
+      "title": "Myvatn -> Husavik -> Godafoss -> Akureyri",
       "drivingMinutes": 90,
       "risk": "low",
       "isAnchor": false,
       "region": "akureyri",
       "highlights": [
         {
+          "id": "husavik-whale-watching",
+          "name": "Husavik - whale watching",
+          "kind": "tour",
+          "coords": [
+            66.0453,
+            -17.3389
+          ],
+          "free": false,
+          "needsBooking": true,
+          "visitMinutes": 210,
+          "weatherSensitive": true,
+          "note": "Reserva em aberto (North Sailing ou Gentle Giants). Partida matinal ~9:30-10:00 recomendada."
+        },
+        {
           "id": "godafoss",
           "name": "Godafoss",
           "kind": "waterfall",
           "coords": [
-            65.683,
-            -17.55
+            65.6827782,
+            -17.5501919
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60,
+          "visitMinutes": 30,
+          "note": "No caminho para Akureyri, na volta pela Route 85.",
           "imageUrl": "/images/godafoss.jpg"
         },
         {
@@ -1258,6 +1255,19 @@
           "needsBooking": false,
           "visitMinutes": 180,
           "imageUrl": "/images/akureyri.jpg"
+        },
+        {
+          "id": "forest-lagoon",
+          "name": "Forest Lagoon (Akureyri)",
+          "kind": "lagoon",
+          "coords": [
+            65.6398,
+            -18.128
+          ],
+          "free": false,
+          "needsBooking": true,
+          "visitMinutes": 105,
+          "note": "Reserva em aberto. Slot noturno ~20:00-20:30 recomendado."
         }
       ],
       "campsitePlanA": "akureyri-hamrar",
@@ -1265,11 +1275,12 @@
       "mandatoryChecks": [],
       "narrativa": {
         "diaSemana": "Qui",
-        "trecho": "Myvatn -> Godafoss -> Akureyri",
+        "trecho": "Myvatn -> Husavik (whale watching) -> Godafoss -> Akureyri",
         "tempoDirecaoTexto": "~1,5h",
         "destaquesResumo": [
-          "Cachoeira Godafoss",
-          "Capital do norte"
+          "Whale watching em Husavik",
+          "Cachoeira Godafoss (via Route 85, no retorno)",
+          "Forest Lagoon a noite"
         ],
         "campingPlanoCTexto": "Varmahlid Campsite (Skagafjordur, no caminho de volta)"
       }
@@ -1288,12 +1299,12 @@
           "name": "Kirkjufell",
           "kind": "volcano",
           "coords": [
-            64.927,
-            -23.311
+            64.9416667,
+            -23.3069444
           ],
           "free": true,
           "needsBooking": false,
-          "visitMinutes": 60,
+          "visitMinutes": 45,
           "imageUrl": "/images/kirkjufell.jpg"
         },
         {
@@ -1301,13 +1312,14 @@
           "name": "Snaefellsjokull",
           "kind": "glacier",
           "coords": [
-            64.808,
-            -23.777
+            64.8057023,
+            -23.7730967
           ],
           "free": true,
           "needsBooking": false,
           "visitMinutes": 120,
           "weatherSensitive": true,
+          "note": "Mirantes e caminhada curta.",
           "imageUrl": "/images/snaefellsjokull.jpg"
         }
       ],
@@ -1325,7 +1337,8 @@
         "tempoDirecaoTexto": "~4,5-5h",
         "destaquesResumo": [
           "Kirkjufell",
-          "Vulcao-geleira Snaefellsjokull"
+          "Vulcao-geleira Snaefellsjokull",
+          "Trecho mais longo do roteiro"
         ],
         "campingPlanoCTexto": "Grundarfjordur Campsite (perto do Kirkjufell)"
       }
@@ -1333,7 +1346,7 @@
     {
       "n": 13,
       "date": "2026-09-19",
-      "title": "Snaefellsnes -> devolver a camper -> KEF",
+      "title": "Snaefellsnes -> devolver a camper -> Reykjavik/KEF",
       "drivingMinutes": 165,
       "risk": "low",
       "isAnchor": false,
@@ -1344,17 +1357,18 @@
           "name": "Janela alternativa: Thrihnukagigur (se remarcado)",
           "kind": "tour",
           "coords": [
-            63.995,
-            -21.698
+            63.998462,
+            -21.6989636
           ],
           "free": false,
           "needsBooking": true,
-          "visitMinutes": 360,
+          "visitMinutes": 300,
           "note": "So se o Dia 2 foi cancelado.",
           "imageUrl": "/images/janela-thrihnukagigur.jpg"
         }
       ],
-      "campsitePlanA": "reykjanesbaer",
+      "campsitePlanA": "reykjavik-laugardalur",
+      "campsitePlanB": "reykjanesbaer",
       "riskIds": [],
       "mandatoryChecks": [
         "volcano"
@@ -1393,20 +1407,21 @@
         "url": "https://safetravel.is/alerts"
       },
       {
-        "nome": "Previsao oficial (vedur.is)",
-        "url": "https://en.vedur.is"
+        "nome": "Reynisfjara - condicoes da praia",
+        "url": "https://safetravel.is/travel-conditions/blackbeach-safety/"
       },
       {
-        "nome": "Ferry Herjolfur",
-        "url": "https://herjolfur.is"
+        "nome": "Previsao oficial (vedur.is)",
+        "url": "https://en.vedur.is"
       }
     ]
   },
   "notasCamping": [
-    "Landmannalaugar e Thakgil so operam na temporada de verao (maio-setembro) - confirmar abertura antes.",
-    "Svinafell (Plano B do dia 7) tem cozinha interna equipada - considerar como Plano A se preferirem conforto a ficar dentro do parque nacional.",
-    "Camping Card avaliado e nao vale a pena para este roteiro - expira em 15/09 e varios campings do Plano A sao parques nacionais/highlands normalmente excluidos da rede do cartao.",
-    "Reserva antecipada de camping so recomendado para Landmannalaugar (app Parka). Os demais aceitam pagamento no local em setembro (baixa temporada)."
+    "Landmannalaugar so opera na temporada de verao (maio-setembro) - confirmar abertura antes.",
+    "Landmannalaugar (parka.is): o sistema pode ter limite de capacidade diaria perto do fim da temporada. Fallback: chegar depois das 16h no Dia 3 (dispensa a reserva de estacionamento) ou usar o Camping B/C (Landmannahellir ou Hrauneyjar Highland Center).",
+    "Svinafell (Plano B dos Dias 6-7) tem cozinha interna equipada - considerar como Plano A se preferirem conforto a ficar dentro do parque nacional.",
+    "Camping Card avaliado e nao vale a pena para este roteiro - expira em 15/09.",
+    "Reserva antecipada de camping so e recomendada para Landmannalaugar. Os demais aceitam pagamento no local em setembro (baixa temporada)."
   ],
   "reservasAntecipadas": [
     {
@@ -1417,39 +1432,33 @@
       "data": "2026-09-08",
       "horario": "10:30",
       "tipoRisco": "ancora",
+      "status": "confirmada",
       "planoB": {
-        "descricao": "Reagendar para manha do Dia 13 (19/09)",
+        "descricao": "Reagendar para a manha do Dia 13 (19/09)",
         "dia": 13,
         "data": "2026-09-19"
       },
-      "planoC": "Aceitar perda, substituir por Kerid",
-      "observacao": "~$400/adulto, vagas limitadas",
+      "planoC": "Aceitar a perda, substituir por Kerid",
+      "observacao": "Confirmado e pago - $413.38, invoice IVO-99446319, booking IVO-T140578482 (self-drive)",
       "ordemCompra": 1
     },
     {
-      "id": "glacier-hike-skaftafell",
-      "nome": "Glacier hike Skaftafell (Falljokull)",
-      "site": "glacierguides.is",
-      "dia": 8,
-      "data": "2026-09-14",
+      "id": "glacier-explorer-falljokull",
+      "nome": "Glacier Explorer - Falljokull (Arctic Adventures)",
+      "site": "arcticadventures.is",
+      "dia": 7,
+      "data": "2026-09-13",
+      "horario": "11:00",
       "tipoRisco": "ancora",
+      "status": "confirmada",
       "planoB": {
-        "descricao": "Perguntar horario na tarde do Dia 7 (13/09)",
+        "descricao": "Verificar a proxima janela disponivel com a Arctic Adventures no local",
         "dia": 7,
         "data": "2026-09-13"
       },
       "planoC": "Svartifoss + mirante sem o hike",
-      "observacao": "Guia certificado obrigatorio",
+      "observacao": "Confirmado - ticket ARC-T140762148, 2 participantes, Skaftafell Base Camp. Isolado no dia",
       "ordemCompra": 2
-    },
-    {
-      "id": "ferry-herjolfur",
-      "nome": "Ferry Herjolfur (Landeyjahofn -> Vestmannaeyjar)",
-      "site": "herjolfur.is",
-      "dia": 6,
-      "data": "2026-09-12",
-      "tipoRisco": "flexivel",
-      "ordemCompra": 3
     },
     {
       "id": "vok-baths",
@@ -1458,7 +1467,8 @@
       "dia": 9,
       "data": "2026-09-15",
       "tipoRisco": "flexivel",
-      "observacao": "Piscinas flutuantes em Egilsstadir, reserva recomendada mas sem grande risco em setembro",
+      "status": "em-aberto",
+      "observacao": "Piscinas flutuantes em Egilsstadir - reserva ainda em aberto",
       "ordemCompra": 3
     },
     {
@@ -1468,29 +1478,55 @@
       "dia": 10,
       "data": "2026-09-16",
       "tipoRisco": "flexivel",
-      "observacao": "Reservar horario do por do sol se quiserem foto bonita",
-      "ordemCompra": 3
+      "status": "em-aberto",
+      "observacao": "Reserva ainda em aberto - considerar o horario do por do sol",
+      "ordemCompra": 4
+    },
+    {
+      "id": "whale-watching-husavik",
+      "nome": "Whale watching (Husavik)",
+      "site": "North Sailing / Gentle Giants",
+      "dia": 11,
+      "data": "2026-09-17",
+      "tipoRisco": "flexivel",
+      "status": "em-aberto",
+      "observacao": "Reserva ainda em aberto - partida matinal ~9:30-10:00 recomendada",
+      "ordemCompra": 5
+    },
+    {
+      "id": "forest-lagoon",
+      "nome": "Forest Lagoon (Akureyri)",
+      "site": "forestlagoon.is",
+      "dia": 11,
+      "data": "2026-09-17",
+      "tipoRisco": "flexivel",
+      "status": "em-aberto",
+      "observacao": "Reserva ainda em aberto - slot noturno ~20:00-20:30 recomendado",
+      "ordemCompra": 6
     }
   ],
   "checklistReservas": {
-    "estaSemana": [
+    "confirmadas": [
       "thrihnukagigur",
-      "glacier-hike-skaftafell"
+      "glacier-explorer-falljokull"
     ],
-    "proximasSemanas": [
-      "ferry-herjolfur",
+    "emAberto": [
       "vok-baths",
-      "myvatn-nature-baths"
+      "myvatn-nature-baths",
+      "whale-watching-husavik",
+      "forest-lagoon"
     ],
-    "maisPertoDaViagem": [
+    "outrasPendencias": [
       {
-        "item": "Camping Landmannalaugar (opcional)",
-        "dias": "09-10/09",
-        "onde": "app Parka"
+        "item": "Landmannalaugar parking",
+        "dias": "09-11/09",
+        "onde": "parka.is",
+        "status": "ou confirmar a estrategia de fallback - chegada depois das 16h no Dia 3"
       },
       {
-        "item": "Confirmar seguro da camper para F-roads",
-        "onde": "direto com a CampEasy"
+        "item": "Hotel do stopover de Montreal (volta)",
+        "dias": "20/09 (~12h15)",
+        "status": "ainda nao reservado"
       }
     ],
     "jaResolvido": [
@@ -1534,17 +1570,21 @@
       "regiao": "Egilsstadir",
       "nome": "Vok Baths",
       "tipo": "Piscinas flutuantes no lago",
-      "precoReserva": "Pago, ver reservasAntecipadas"
+      "precoReserva": "Pago, reserva em aberto"
     },
     {
-      "dia": [
-        10,
-        11
-      ],
+      "dia": 10,
       "regiao": "Myvatn",
       "nome": "Myvatn Nature Baths",
       "tipo": "Alternativa ao Blue Lagoon",
-      "precoReserva": "Pago, ver reservasAntecipadas"
+      "precoReserva": "Pago, reserva em aberto"
+    },
+    {
+      "dia": 11,
+      "regiao": "Akureyri",
+      "nome": "Forest Lagoon",
+      "tipo": "Piscina termal com vista do fiorde",
+      "precoReserva": "Pago, reserva em aberto - slot noturno"
     }
   ],
   "banhosPerigosos": [
@@ -1562,8 +1602,7 @@
   "checagemDiariaObrigatoria": {
     "sites": [
       "road.is",
-      "safetravel.is",
-      "herjolfur.is"
+      "safetravel.is"
     ],
     "quando": "Toda manha de dia com risco medio ou alto, antes de sair do camping"
   },
@@ -1572,33 +1611,131 @@
       "Jaqueta impermeavel The North Face",
       "Calca impermeavel The North Face",
       "Jaqueta The North Face ThermoBall (isolamento)",
-      "1 fleece Galapagos",
-      "Blusa e calca segunda pele Galapagos",
       "3 blusas Tech manga comprida Insider",
       "On Cloudrock Low Waterproof (calcado)"
     ],
     "pendentes": [
-      "Moletom",
-      "Mais calcas para uso diario"
+      "Fleece - item Galapagos original foi devolvido, ainda falta comprar",
+      "Base layer top - item Galapagos original foi devolvido, ainda falta comprar"
     ],
     "avaliadosNaoComprados": [
       "Columbia Hikebound II",
       "The North Face Antora",
       "Tecidos alternativos ao merino"
-    ]
+    ],
+    "notas": [
+      "Base layer bottom: coberto com 2 leggings de lycra fitness ja disponiveis (substituto funcional, nao precisa comprar).",
+      "Calcado de trilha - finalistas: New Balance Fresh Foam X Hierro v9 (mais equilibrado/multiuso) e On Cloudultra Pro. Decisao ainda em aberto."
+    ],
+    "planoCompraMontreal": {
+      "quando": "Stopover da ida - 06/09, ~16h",
+      "lojas": [
+        {
+          "loja": "Uniqlo",
+          "endereco": "Centre Eaton",
+          "foco": "Base layers, fleece leve"
+        },
+        {
+          "loja": "MEC Montreal",
+          "endereco": "-",
+          "foco": "Melhor fonte de Patagonia (sem loja propria da marca em Montreal); fleece tecnico"
+        },
+        {
+          "loja": "New Balance",
+          "endereco": "1229 Rue Sainte-Catherine",
+          "foco": "Calcado trilha"
+        },
+        {
+          "loja": "Boutique TAG / On Running",
+          "endereco": "1325 Rue Sainte-Catherine Ouest",
+          "foco": "Calcado trilha"
+        }
+      ]
+    }
   },
   "pendenciasGerais": [
-    "Confirmar seguro/protecao da camper para F-roads e cascalho (perguntar a CampEasy na retirada)",
-    "Comprar as reservas antecipadas (secao reservasAntecipadas)",
     "Checklist final de mala",
     "Checklist pre-embarque",
     "Restaurantes (nao definidos ainda)",
-    "Confirmar status F-roads e atividade vulcanica do Reykjanes proximo a data de viagem"
+    "Confirmar status F-roads e atividade vulcanica do Reykjanes proximo a data de viagem",
+    "Comprar fleece e base layer top no stopover de Montreal (ida)",
+    "Reservar hotel do stopover de Montreal (volta)",
+    "Resolver decisao de calcado trilha (Hierro v9 vs. Cloudultra Pro)"
   ],
   "notasContexto": [
     "Setembro e mes de transicao: menos turistas, chance de aurora, mas F-roads podem fechar a qualquer momento na segunda quinzena - sempre priorizar checagem no dia.",
     "Rota de acesso a Landmannalaugar escolhida: F26/F225 pelo norte (mais segura para campervan) - evitar F208 pelo sul (travessias de rio profundas, risco documentado de perda de veiculo).",
-    "Recomendacao: nao levar a campervan no ferry para Vestmannaeyjar - deixar estacionada gratuitamente em Landeyjahofn e ir como passageiro, evitando disputa por vaga de veiculo.",
-    "Cavernas de gelo cristalinas (Jokulsarlon) nao disponiveis em setembro (temporada out-abr) - por isso o roteiro usa glacier hike em Skaftafell/Falljokull em vez disso."
-  ]
+    "Cavernas de gelo cristalinas (Jokulsarlon) nao disponiveis em setembro (temporada out-abr) - por isso o roteiro usa glacier hike em Skaftafell/Falljokull em vez disso.",
+    "Reynisfjara (atualizado na v7): erosao significativa da areia e colapso parcial em fevereiro/2026, praia menor e mais rochosa, e a caverna Halsanefshellir fica frequentemente inacessivel na mare alta. Checar safetravel.is no dia. Tratar a parada como curta e flexivel.",
+    "Vestmannaeyjar nao faz mais parte do roteiro (decisao da v6) - o risco de ferry cancelado deixou de existir. Nao recriar pesquisa sobre o ferry Herjolfur para esta viagem.",
+    "Decisao da v6: glacier hike isolado no Dia 7 e Jokulsarlon/Diamond Beach isolados no Dia 8. Perdido: Eldfell, Eldheimar e puffins - aceito como troca."
+  ],
+  "descobertasCandidatas": [
+    {
+      "nome": "Solheimasandur (destrocos do DC-3)",
+      "categoria": "Praias/destrocos",
+      "ondeEncaixa": "Dia 5 ou 6, entre Skogar e Vik (Route 1)",
+      "desvio": "Nao e desvio de rota - e parada no trajeto; so estacionamento + caminhada",
+      "custo": "Estacionamento pago (~750 ISK, app Parka); trilha gratis; shuttle opcional (~3.200 ISK/pessoa)",
+      "precisa4x4": false,
+      "tempoVisita": "2-3h a pe (4km cada trecho) ou ~1h de shuttle",
+      "status": "opcao-b",
+      "statusTexto": "Opcao B do dia"
+    },
+    {
+      "nome": "Asbyrgi (canyon em ferradura)",
+      "categoria": "Canyons/miradouros",
+      "ondeEncaixa": "Dia 10, via Route 862 a partir de Dettifoss",
+      "desvio": "~30-40min cada trecho a partir de Dettifoss",
+      "custo": "Gratis (estacionamento no centro de visitantes)",
+      "precisa4x4": false,
+      "tempoVisita": "1-2h (mirante + curta caminhada)",
+      "status": "opcao-b",
+      "statusTexto": "Opcao B do dia"
+    },
+    {
+      "nome": "Studlagil (canyon de basalto turquesa)",
+      "categoria": "Canyons pouco conhecidos",
+      "ondeEncaixa": "Dia 9, via Route 923 a partir de Egilsstadir",
+      "desvio": "~52-70km / ~1h cada trecho - desvio grande",
+      "custo": "Lado oeste gratis (caminhada maior); lado leste pago (~1.000 ISK, caminhada menor)",
+      "precisa4x4": false,
+      "tempoVisita": "1,5-3h dependendo do lado",
+      "status": "opcao-c",
+      "statusTexto": "Opcao C do dia - so se o desvio a Seydisfjordur ja tiver sido cortado, ja que o Dia 9 e o mais longo do roteiro"
+    },
+    {
+      "nome": "Maelifell (montanha vulcanica conica)",
+      "categoria": "Miradouros/Highlands",
+      "ondeEncaixa": "Avaliado para os dias de Highlands (3-4)",
+      "desvio": "Requer a F210, com travessias de rio",
+      "custo": "-",
+      "precisa4x4": true,
+      "tempoVisita": "-",
+      "status": "rejeitada",
+      "statusTexto": "Rejeitada - travessias de rio profundas na F210 sao incompativeis com a campervan CampEasy. Registrada para evitar pesquisa redundante"
+    }
+  ],
+  "recursosMapa": {
+    "descricao": "O roteiro completo tambem esta mapeado no Google My Maps, em 3 camadas que podem ser ligadas e desligadas separadamente.",
+    "camadas": [
+      {
+        "nome": "Regiao",
+        "conteudo": "Marcadores amplos de area geografica, para orientacao rapida do trecho do dia",
+        "arquivo": "roteiro-islandia-2026-regioes.csv"
+      },
+      {
+        "nome": "Passeio",
+        "conteudo": "Atracoes, banhos termais e as duas reservas ancora",
+        "arquivo": "roteiro-islandia-2026-passeios.csv"
+      },
+      {
+        "nome": "Parking",
+        "conteudo": "Campings Plano A de cada dia + o parking pago de Landmannalaugar (parka.is)",
+        "arquivo": "roteiro-islandia-2026-parking.csv"
+      }
+    ],
+    "comoUsar": "Cada CSV e importado como uma camada separada no Google My Maps (mymaps.google.com -> Criar novo mapa -> Importar, uma vez por arquivo).",
+    "linkMapa": null
+  }
 }
